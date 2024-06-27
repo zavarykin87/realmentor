@@ -5,18 +5,14 @@ spring:
     basename: i18n/messages
   datasource:
     url: jdbc:postgresql://localhost:5432/realmentor
+    driver-class-name: org.postgresql.Driver
     username: postgres
-    password: postgres
-#  liquibase:
-#    change-log: classpath:db/changelog/changelog-master.yaml
-
+    password: 12345
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create # none / validate / create
-
     properties:
       hibernate:
         format_sql: true
-
     show-sql: true
