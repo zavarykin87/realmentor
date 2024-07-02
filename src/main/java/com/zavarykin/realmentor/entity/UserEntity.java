@@ -27,6 +27,14 @@ public class UserEntity {
     @JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, unique = true)
     private EmailEntity email;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "mentor_id", referencedColumnName = "id", unique = true)
+    private MentorEntity mentor;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "student_id", referencedColumnName = "id", unique = true)
+    private StudentEntity student;
+
     public Long getId() {
         return id;
     }
@@ -65,5 +73,21 @@ public class UserEntity {
 
     public void setEmail(EmailEntity emailEntity) {
         this.email = emailEntity;
+    }
+
+    public MentorEntity getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(MentorEntity mentor) {
+        this.mentor = mentor;
+    }
+
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
     }
 }
