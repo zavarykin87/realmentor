@@ -16,11 +16,6 @@ public class RealMentorApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(RealMentorApplication.class, args);
 
-		UserServiceImpl service = context.getBean(UserServiceImpl.class);
-
-		UserEntity userEntity = service.create();
-		service.delete(userEntity);
-
 	}
 
 }

@@ -11,7 +11,7 @@ public class StudentEntity {
     private Long id;
 
     @OneToOne(mappedBy = "student")
-    private UserEntity user;
+    private AccountEntity account;
 
     public Long getId() {
         return id;
@@ -21,11 +21,11 @@ public class StudentEntity {
         this.id = id;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public AccountEntity getAccount() {
+        return account;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setAccount(AccountEntity account) {
+        this.account = account;
     }
 }

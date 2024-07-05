@@ -5,6 +5,7 @@ import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserEntity create() {
         EmailEntity emailEntity = new EmailEntity();
         emailEntity.setAddress("andrew@mail.com");
@@ -25,7 +27,6 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = new UserEntity();
         userEntity.setLogin("andrew");
         userEntity.setPassword("12345");
-        userEntity.setRegistrationDate(LocalDate.now());
         userEntity.setEmail(emailEntity);
 
         userEntity = userRepository.save(userEntity);

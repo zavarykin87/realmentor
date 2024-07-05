@@ -10,10 +10,8 @@ import java.sql.SQLException;
 class RealMentorApplicationTests {
 
     @Test
-	void contextLoads() throws InterruptedException, SQLException {
-        String[] args = new String[1];
-        args[0] = "";
-        RealMentorApplication.main(args);
+	void contextLoads() {
+
 	}
 
 }

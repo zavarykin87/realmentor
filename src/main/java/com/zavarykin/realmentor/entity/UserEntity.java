@@ -2,6 +2,7 @@ package com.zavarykin.realmentor.entity;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
 
@@ -19,21 +20,17 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "registration_date", nullable = false)
-    private LocalDate registrationDate;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, unique = true)
     private EmailEntity email;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "mentor_id", referencedColumnName = "id", unique = true)
-    private MentorEntity mentor;
+    @JoinColumn(name = "phone_id", referencedColumnName = "id", unique = true)
+    private PhoneEntity phone;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "student_id", referencedColumnName = "id", unique = true)
-    private StudentEntity student;
+    @JoinColumn(name = "account_id", referencedColumnName = "id", unique = true)
+    private AccountEntity account;
 
     public Long getId() {
         return id;
@@ -59,35 +56,28 @@ public class UserEntity {
         this.password = password;
     }
 
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
     public EmailEntity getEmail() {
         return email;
     }
 
-    public void setEmail(EmailEntity emailEntity) {
-        this.email = emailEntity;
+    public void setEmail(EmailEntity email) {
+        this.email = email;
     }
 
-    public MentorEntity getMentor() {
-        return mentor;
+    public PhoneEntity getPhone() {
+        return phone;
     }
 
-    public void setMentor(MentorEntity mentor) {
-        this.mentor = mentor;
+    public void setPhone(PhoneEntity phone) {
+        this.phone = phone;
     }
 
-    public StudentEntity getStudent() {
-        return student;
+    public AccountEntity getAccount() {
+        return account;
     }
 
-    public void setStudent(StudentEntity student) {
-        this.student = student;
+    public void setAccount(AccountEntity account) {
+        this.account = account;
     }
+
 }
