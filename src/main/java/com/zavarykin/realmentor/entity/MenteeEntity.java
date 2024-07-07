@@ -3,8 +3,8 @@ package com.zavarykin.realmentor.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "students")
-public class StudentEntity {
+@Table(name = "mentees")
+public class MenteeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

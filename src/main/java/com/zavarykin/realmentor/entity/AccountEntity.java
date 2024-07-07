@@ -30,8 +30,8 @@ public class AccountEntity {
     private MentorEntity mentor;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "student_id", referencedColumnName = "id", unique = true)
-    private StudentEntity student;
+    @JoinColumn(name = "mentee_id", referencedColumnName = "id", unique = true)
+    private MenteeEntity mentee;
 
     @OneToOne(mappedBy = "account")
     private UserEntity user;
