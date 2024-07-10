@@ -2,9 +2,7 @@ package com.zavarykin.realmentor.entity;
 
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Fetch;
 
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
@@ -21,15 +19,15 @@ public class UserEntity {
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, unique = true)
+    @JoinColumn(name = "email_id", referencedColumnName = "id")
     private EmailEntity email;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "phone_id", referencedColumnName = "id", unique = true)
+    @JoinColumn(name = "phone_id", referencedColumnName = "id")
     private PhoneEntity phone;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "account_id", referencedColumnName = "id", unique = true)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private AccountEntity account;
 
     public Long getId() {
