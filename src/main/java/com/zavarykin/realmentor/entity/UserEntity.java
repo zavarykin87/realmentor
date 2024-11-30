@@ -2,6 +2,12 @@ package com.zavarykin.realmentor.entity;
 
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Set;
 
 
 @Entity
@@ -12,38 +18,24 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login", nullable = false, unique = true)
-    private String login;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "email_id", referencedColumnName = "id")
-    private EmailEntity email;
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "phone_id", referencedColumnName = "id")
-    private PhoneEntity phone;
+    @OneToMany(mappedBy = "user")
+    private Set<AuthorityEntity> authorities;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private AccountEntity account;
-
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -54,28 +46,19 @@ public class UserEntity {
         this.password = password;
     }
 
-    public EmailEntity getEmail() {
-        return email;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setEmail(EmailEntity email) {
-        this.email = email;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public PhoneEntity getPhone() {
-        return phone;
+    public Set<AuthorityEntity> getAuthorities() {
+        return authorities;
     }
 
-    public void setPhone(PhoneEntity phone) {
-        this.phone = phone;
+    public void setAuthorities(Set<AuthorityEntity> authorities) {
+        this.authorities = authorities;
     }
-
-    public AccountEntity getAccount() {
-        return account;
-    }
-
-    public void setAccount(AccountEntity account) {
-        this.account = account;
-    }
-
 }
