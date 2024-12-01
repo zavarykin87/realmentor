@@ -22,8 +22,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-                .formLogin(withDefaults());
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(form -> form.loginPage("/login"));
 
         return http.build();
     }
@@ -31,12 +35,14 @@ public class SecurityConfig {
     @Bean
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource, PasswordEncoder passwordEncoder) {
         JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
+
         UserDetails entity1 = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .roles(Role.ADMIN.name())
                 .build();
         userDetailsManager.createUser(entity1);
+
         return userDetailsManager;
     }
 

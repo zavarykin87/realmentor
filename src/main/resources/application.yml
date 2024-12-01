@@ -7,7 +7,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/realmentor
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 12345
+    password: postgres
   jpa:
     generate-ddl: true
     hibernate:

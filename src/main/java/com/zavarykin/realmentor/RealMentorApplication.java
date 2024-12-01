@@ -27,9 +27,6 @@ public class RealMentorApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(RealMentorApplication.class, args);
 
-
-		UserService userService = context.getBean(UserService.class);
-		userService.createUser(new UserTO("user", "user"));
 	}
 
 }
