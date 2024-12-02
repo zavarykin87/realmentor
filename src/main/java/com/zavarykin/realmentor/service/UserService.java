@@ -5,6 +5,8 @@ import com.zavarykin.realmentor.entity.UserEntity;
 
 public interface UserService {
 
-    UserEntity createUser(UserTO userTO);
+    //UserEntity createUser(UserTO userTO);
+
+    UserTO getByUsername(String username);
 
 }

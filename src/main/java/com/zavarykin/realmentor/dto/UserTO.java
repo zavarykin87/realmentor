@@ -8,11 +8,6 @@ public class UserTO {
 
     private String password;
 
-    public UserTO(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
     public Long getId() {
         return id;
     }

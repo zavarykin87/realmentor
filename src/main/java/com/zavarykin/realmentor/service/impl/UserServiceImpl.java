@@ -23,19 +23,27 @@ public class UserServiceImpl implements UserService {
         this.userDetailsManager = userDetailsManager;
     }
 
-
     @Override
-    public UserEntity createUser(UserTO userTO) {
-        if (!userDetailsManager.userExists(userTO.getUsername())) {
-            UserDetails user = User.builder()
-                    .username(userTO.getUsername())
-                    .password(userTO.getPassword())
-                    .roles(Role.USER.name())
-                    .build();
-            userDetailsManager.createUser(user);
-            return userRepository.findByUsername(userTO.getUsername()).get();
-        } else {
-            return null;
-        }
+    public UserTO getByUsername(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow();
+        UserTO userTO = new UserTO();
+        userTO.setId(userTO.getId());
+        userTO.setUsername(userEntity.getUsername());
+        return userTO;
     }
+
+    //    @Override
+//    public UserTO createUser(UserTO userTO) {
+//        if (!userDetailsManager.userExists(userTO.getUsername())) {
+//            UserDetails user = User.builder()
+//                    .username(userTO.getUsername())
+//                    .password(userTO.getPassword())
+//                    .roles(Role.USER.name())
+//                    .build();
+//            userDetailsManager.createUser(user);
+//            return userRepository.findByUsername(userTO.getUsername()).get();
+//        } else {
+//            return null;
+//        }
+//    }
 }
