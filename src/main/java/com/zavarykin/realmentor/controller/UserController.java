@@ -1,8 +1,6 @@
 package com.zavarykin.realmentor.controller;
 
-import com.zavarykin.realmentor.config.SecurityConfig;
-import com.zavarykin.realmentor.dto.UserTO;
-import com.zavarykin.realmentor.repository.UserRepository;
+import com.zavarykin.realmentor.dto.UserDto;
 import com.zavarykin.realmentor.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -24,8 +22,8 @@ public class UserController {
 
     @GetMapping("/user/{username}")
     public String userPage(@PathVariable String username, Model model) {
-        final UserTO userTO = userService.getByUsername(username);
-        model.addAttribute("userTO", userTO);
+        final UserDto userDto = userService.getByUsername(username);
+        model.addAttribute("userDto", userDto);
         return "user";
     }
 

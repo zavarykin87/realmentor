@@ -1,14 +1,9 @@
 package com.zavarykin.realmentor.service.impl;
 
-import com.zavarykin.realmentor.dto.UserTO;
-import com.zavarykin.realmentor.entity.Role;
+import com.zavarykin.realmentor.dto.UserDto;
 import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.service.UserService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +19,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserTO getByUsername(String username) {
+    public UserDto getByUsername(String username) {
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow();
-        UserTO userTO = new UserTO();
-        userTO.setId(userTO.getId());
-        userTO.setUsername(userEntity.getUsername());
-        return userTO;
+        UserDto userDto = new UserDto();
+        userDto.setId(userDto.getId());
+        userDto.setUsername(userEntity.getUsername());
+        return userDto;
     }
 
     //    @Override

@@ -1,6 +1,6 @@
 package com.zavarykin.realmentor.dto;
 
-public class UserTO {
+public class UserDto {
 
     private Long id;
 
