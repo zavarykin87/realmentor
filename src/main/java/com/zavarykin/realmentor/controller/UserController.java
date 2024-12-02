@@ -35,4 +35,16 @@ public class UserController {
         String username = userDetails.getUsername();
         return "redirect:/user/" + username;
     }
+
+    @GetMapping("/user/registration")
+    public String registrationPage() {
+        return "registration";
+    }
+
+    @PostMapping("/user/registration")
+    public String registration(UserDto userDto) {
+        userService.create(userDto);
+        return "redirect:/login";
+    }
+
 }

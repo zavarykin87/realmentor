@@ -4,7 +4,7 @@ import com.zavarykin.realmentor.dto.UserDto;
 
 public interface UserService {
 
-    //UserEntity createUser(UserTO userTO);
+    UserDto create(UserDto userDto);
 
     UserDto getByUsername(String username);
 
