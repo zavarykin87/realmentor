@@ -1,6 +1,8 @@
 package com.zavarykin.realmentor.controller;
 
+import com.zavarykin.realmentor.dto.ProfileDto;
 import com.zavarykin.realmentor.dto.UserDto;
+import com.zavarykin.realmentor.service.ProfileService;
 import com.zavarykin.realmentor.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,9 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
     private final UserService userService;
+    private final ProfileService profileService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          ProfileService profileService) {
         this.userService = userService;
+        this.profileService = profileService;
     }
 
     @GetMapping("/user/{username}")
@@ -32,6 +37,8 @@ public class UserController {
         }
         UserDto userDto = userService.getByUsername(username);
         model.addAttribute("userDto", userDto);
+        ProfileDto profileDto = profileService.getByUsername(username);
+        model.addAttribute("profileDto", profileDto);
         return "user";
     }
 
@@ -56,7 +63,7 @@ public class UserController {
     @PostMapping("/user/registration")
     public String registration(UserDto userDto) {
         userService.create(userDto);
-        return "redirect:/login";
+        return "redirect:/login"; //TODO подумать над редиректом на другую страницу, например форму подтверждения email
     }
 
 }

@@ -20,15 +20,18 @@ public class UserEntity {
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-
+    // TODO добавить валидацию на минимальное количество символов
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<AuthorityEntity> authorities;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private ProfileEntity profileEntity;
 
     public String getUsername() {
         return username;
@@ -60,5 +63,13 @@ public class UserEntity {
 
     public void setAuthorities(Set<AuthorityEntity> authorities) {
         this.authorities = authorities;
+    }
+
+    public ProfileEntity getProfileEntity() {
+        return profileEntity;
+    }
+
+    public void setProfileEntity(ProfileEntity profileEntity) {
+        this.profileEntity = profileEntity;
     }
 }
