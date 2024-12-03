@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,9 +9,13 @@
     <title>Document</title>
 </head>
 <body>
-      <div th:object="${userDto}">
+      <div th:if="${owner}" th:object="${userDto}">
             <p>Привет!!!</p>
             <p th:text="*{username}"></p>
+      </div>
+      <div th:if="${!owner}" th:object="${userDto}">
+          <p>Привет!!!</p>
+          <p>гость</p>
       </div>
 </body>
 </html>

@@ -22,11 +22,23 @@ public class UserController {
 
     @GetMapping("/user/{username}")
     public String userPage(@PathVariable String username, Model model) {
-        final UserDto userDto = userService.getByUsername(username);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = userDetails.getUsername();
+        // должно быть отличие в view, когда пользователь заходит на свою или чужую страницу
+        if (username.equals(currentUsername)) {
+            model.addAttribute("owner", true);
+        } else {
+            model.addAttribute("owner", false);
+        }
+        UserDto userDto = userService.getByUsername(username);
         model.addAttribute("userDto", userDto);
         return "user";
     }
 
+    /**
+     * Метод вызывается после успешной аутентификации
+     * @return редирект на домашнюю страницу пользователя
+     */
     @PostMapping("/user")
     public String user() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
