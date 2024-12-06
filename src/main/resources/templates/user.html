@@ -11,6 +11,7 @@
 <body>
       <div th:if="${owner}" th:object="${profileDto}">
         <div th:if="${profileDto != null}">
+            <p>Привет ты на своей странице</p>
             <p th:text="*{username}">username</p>
             <p th:text="*{firstname}">firstname</p>
             <p th:text="*{lastname}">lastname</p>
@@ -19,13 +20,20 @@
         <div th:if="${profileDto == null}">
             <a href="profile.html" th:href="@{/profile}">Заполните профиль</a>
         </div>
+          <div th:if="${profileDto != null}">
+              <a href="profile.html" th:href="@{/profile}">Редактировать профиль</a>
+          </div>
       </div>
 
 
 
-      <div th:if="${!owner}" th:object="${userDto}">
-          <p>Привет!!!</p>
-          <p>гость</p>
+      <div th:if="${!owner}" th:object="${profileDto}">
+          <div th:if="${profileDto != null}">
+              <p>Привет ты на странице пользователя:</p>
+              <p th:text="*{username}">username</p>
+              <p th:text="*{firstname}">firstname</p>
+              <p th:text="*{lastname}">lastname</p>
+          </div>
       </div>
 </body>
 </html>
