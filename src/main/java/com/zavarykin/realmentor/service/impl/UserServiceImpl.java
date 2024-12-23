@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
                     .username(userDto.getUsername())
                     .password(passwordEncoder.encode(userDto.getPassword()))
                     .roles(Role.USER.name())
+                    .disabled(true)
                     .build();
             userDetailsManager.createUser(user);
             return getByUsername(user.getUsername());
