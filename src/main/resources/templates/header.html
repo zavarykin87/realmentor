@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header th:fragment="header">
+        <h1>Welcome to Real mentor project!</h1>
+        <nav>
+            <a sec:authorize="!isAuthenticated()" href="login.html" th:href="@{/login}">Log in</a>
+            <a sec:authorize="isAuthenticated()" href="logout.html" th:href="@{/logout}">Log Out</a>
+        </nav>
+    </header>
+    
+</body>
+</html>

@@ -10,13 +10,15 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Welcome to Real mentor project!</h1>
-    <div sec:authorize="!isAuthenticated()">
-        <a href="login.html" th:href="@{/login}">Log in</a>
-    </div>
-    <div sec:authorize="isAuthenticated()">
-        <a href="logout.html" th:href="@{/logout}">Log Out</a>
-    </div>
+    
+    <div th:replace="~{header :: header}"></div>
+
+    <main>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+            Laborum illum quos voluptatum eum ut sit?
+            Voluptatum autem repellendus quasi ab adipisci, similique error beatae ut ducimus, distinctio eum, eius vitae.
+        </p>
+    </main>
     
     <div th:replace="~{footer :: footer}"></div>
     

@@ -10,4 +10,9 @@ public class IndexController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/faq")
+    public String faq() {
+        return "FAQ.html";
+    }
 }
