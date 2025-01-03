@@ -1,7 +1,6 @@
 package com.zavarykin.realmentor.entity;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "authorities")
@@ -18,7 +17,7 @@ public class AuthorityEntity {
 
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
-    private UserEntity user;
+    private UserEntity userEntity;
 
     public String getAuthority() {
         return authority;
@@ -28,11 +27,11 @@ public class AuthorityEntity {
         this.authority = authority;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 }

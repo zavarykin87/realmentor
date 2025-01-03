@@ -2,8 +2,14 @@ package com.zavarykin.realmentor.controller;
 
 import com.zavarykin.realmentor.dto.ProfileDto;
 import com.zavarykin.realmentor.dto.UserDto;
+import com.zavarykin.realmentor.entity.UserEntity;
+import com.zavarykin.realmentor.entity.VerificationTokenEntity;
+import com.zavarykin.realmentor.event.OnRegistrationEvent;
 import com.zavarykin.realmentor.service.ProfileService;
 import com.zavarykin.realmentor.service.UserService;
+import com.zavarykin.realmentor.service.VerificationTokenService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,16 +19,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
     private final UserService userService;
     private final ProfileService profileService;
+    private final ApplicationEventPublisher eventPublisher;
+    private final VerificationTokenService verificationTokenService;
 
     public UserController(UserService userService,
-                          ProfileService profileService) {
+                          ProfileService profileService,
+                          ApplicationEventPublisher eventPublisher,
+                          VerificationTokenService verificationTokenService) {
         this.userService = userService;
         this.profileService = profileService;
+        this.eventPublisher = eventPublisher;
+        this.verificationTokenService = verificationTokenService;
     }
 
     @GetMapping("/user/{username}")
@@ -61,9 +74,26 @@ public class UserController {
     }
 
     @PostMapping("/user/registration")
-    public String registration(UserDto userDto) {
-        userService.create(userDto);
-        return "redirect:/login"; //TODO подумать над редиректом на другую страницу, например форму подтверждения email
+    public String registration(UserDto userDto, HttpServletRequest request, Model model) {
+        try {
+            userService.create(userDto);
+            String appUrl = request.getHeader("Origin");
+            eventPublisher.publishEvent(new OnRegistrationEvent(appUrl, userDto.getUsername(), userDto.getEmail()));
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+            return "registration";
+        }
+        model.addAttribute("userDto", userDto);
+        return "confirmation";
+    }
+
+    @GetMapping("/user/registrationConfirm")
+    public String registrationConfirm(@RequestParam("token") String token) {
+        VerificationTokenEntity verificationToken = verificationTokenService.getByToken(token);
+        UserEntity userEntity = verificationToken.getUserEntity();
+        userEntity.setEnabled(true);
+        userService.saveUser(userEntity);
+        return "redirect:/login";
     }
 
 }

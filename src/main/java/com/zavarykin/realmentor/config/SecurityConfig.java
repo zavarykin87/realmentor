@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/faq").permitAll()
                         .requestMatchers("/user/registration").permitAll()
+                        .requestMatchers("/user/registrationConfirm").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
