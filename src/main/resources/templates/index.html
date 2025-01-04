@@ -11,16 +11,17 @@
 </head>
 <body>
     
-    <div th:replace="~{header :: header}"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
 
     <main>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Laborum illum quos voluptatum eum ut sit?
-            Voluptatum autem repellendus quasi ab adipisci, similique error beatae ut ducimus, distinctio eum, eius vitae.
+        <p>
+            Вы находитесь на главной странице проекта REALMENTOR.<br>
+            Здесь вы можете найти личного наставника в интереcующей вас области,<br>
+            или самим стать наставников для других пользователей.<br>
         </p>
     </main>
     
-    <div th:replace="~{footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
     
 </body>
 </html>
