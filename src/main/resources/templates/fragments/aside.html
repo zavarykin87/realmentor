@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -9,13 +9,8 @@
     <title>Document</title>
 </head>
 <body>
-
-    <footer th:fragment="footer">
-        <nav>
-            <a href="../contacts.html" th:href="@{/contacts}">Контакты</a>
-            <a href="../faq.html" th:href="@{/faq}">F.A.Q.</a>
-        </nav>
-    </footer>
-
+    <aside th:fragment="aside">
+        боковая панель
+    </aside>
 </body>
 </html>

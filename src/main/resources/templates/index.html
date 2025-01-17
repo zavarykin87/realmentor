@@ -4,9 +4,9 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
     <title>Home</title>
 </head>
 <body>
@@ -20,6 +20,8 @@
             или самим стать наставников для других пользователей.<br>
         </p>
     </main>
+
+    <div th:replace="~{fragments/aside :: aside}"></div>
     
     <div th:replace="~{fragments/footer :: footer}"></div>
     
