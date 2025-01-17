@@ -13,6 +13,11 @@ public class IndexController {
 
     @GetMapping("/faq")
     public String faq() {
-        return "FAQ.html";
+        return "faq";
+    }
+
+    @GetMapping("/contacts")
+    public String contacts() {
+        return "contacts";
     }
 }

@@ -3,6 +3,7 @@ package com.zavarykin.realmentor.service.impl;
 import com.zavarykin.realmentor.dto.ProfileDto;
 import com.zavarykin.realmentor.entity.ProfileEntity;
 import com.zavarykin.realmentor.entity.UserEntity;
+import com.zavarykin.realmentor.exception.EntityNotFoundException;
 import com.zavarykin.realmentor.repository.ProfileRepository;
 import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.service.ProfileService;
@@ -23,9 +24,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileDto getByUsername(String username) {
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow();
-        ProfileEntity entity = profileRepository.findByUserEntity(userEntity);
+    public ProfileDto getByUsername(String username) throws EntityNotFoundException {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(null);
         if (entity == null) {
             return null;
         } else {
@@ -34,9 +35,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileDto create(ProfileDto dto) {
+    public ProfileDto createOrUpdate(ProfileDto dto) {
         UserEntity userEntity = userRepository.findByUsername(dto.getUsername()).orElseThrow();
-        ProfileEntity entity = new ProfileEntity();
+        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(new ProfileEntity());
         entity.setUserEntity(userEntity);
         entity.setFirstname(dto.getFirstname());
         entity.setLastname(dto.getLastname());

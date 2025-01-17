@@ -27,7 +27,7 @@ public class ProfileController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
         profileDto.setUsername(username);
-        profileService.create(profileDto);
+        profileService.createOrUpdate(profileDto);
         return "redirect:/user/" + username;
     }
 }

@@ -5,6 +5,7 @@ import com.zavarykin.realmentor.dto.UserDto;
 import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.entity.VerificationTokenEntity;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
+import com.zavarykin.realmentor.exception.EntityNotFoundException;
 import com.zavarykin.realmentor.service.ProfileService;
 import com.zavarykin.realmentor.service.UserService;
 import com.zavarykin.realmentor.service.VerificationTokenService;
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{username}")
-    public String userPage(@PathVariable String username, Model model) {
+    public String userPage(@PathVariable String username, Model model) throws EntityNotFoundException {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = userDetails.getUsername();
         // должно быть отличие в view, когда пользователь заходит на свою или чужую страницу
