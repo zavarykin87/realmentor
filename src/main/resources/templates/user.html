@@ -6,34 +6,55 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <title>Home</title>
 </head>
 <body>
-    <div th:if="${owner}" th:object="${profileDto}">
-        <div th:if="${profileDto != null}">
-            <p>Привет ты на своей странице</p>
-            <p th:text="*{username}">username</p>
-            <p th:text="*{firstname}">firstname</p>
-            <p th:text="*{lastname}">lastname</p>
-        </div>
 
-        <div th:if="${profileDto == null}">
-            <a href="profile.html" th:href="@{/profile}">Заполните профиль</a>
-        </div>
+    <div class="grid-container">
+
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <main class="grid-main">
+            <div th:if="${owner}" th:object="${profileDto}">
+                <div th:if="${profileDto != null}">
+                    <p>Привет ты на своей странице</p>
+                    <p th:text="*{username}">username</p>
+                    <p th:text="*{firstname}">firstname</p>
+                    <p th:text="*{lastname}">lastname</p>
+                </div>
         
-        <div th:if="${profileDto != null}">
-            <a href="profile.html" th:href="@{/profile}">Редактировать профиль</a>
-        </div>
+                <div th:if="${profileDto == null}">
+                    <a href="profile.html" th:href="@{/profile}">Заполните профиль</a>
+                </div>
+                
+                <div th:if="${profileDto != null}">
+                    <a href="profile.html" th:href="@{/profile}">Редактировать профиль</a>
+                </div>
+            </div>
+        
+            <div th:if="${!owner}" th:object="${profileDto}">
+                <div th:if="${profileDto != null}">
+                    <p>Привет ты на странице пользователя:</p>
+                    <p th:text="*{username}">username</p>
+                    <p th:text="*{firstname}">firstname</p>
+                    <p th:text="*{lastname}">lastname</p>
+                </div>
+            </div>
+
+            <div>
+                тут еще будет лента новостей
+            </div>
+        </main>
+
+        <div th:replace="~{fragments/sidebar :: aside}"></div>
+    
+        <div th:replace="~{fragments/footer :: footer}"></div>
+
     </div>
 
-    <div th:if="${!owner}" th:object="${profileDto}">
-        <div th:if="${profileDto != null}">
-            <p>Привет ты на странице пользователя:</p>
-            <p th:text="*{username}">username</p>
-            <p th:text="*{firstname}">firstname</p>
-            <p th:text="*{lastname}">lastname</p>
-        </div>
-    </div>
+
+
 
 </body>
 </html>

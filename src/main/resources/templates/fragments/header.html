@@ -9,11 +9,10 @@
 </head>
 <body>
 
-    <header th:fragment="header">
+    <header class="grid-header" th:fragment="header">
         <h2>RealMentor Project</h2>
         <nav>
             <a href="../index.html" th:href="@{/}">На главную</a>
-            <a sec:authorize="isAuthenticated()" href="../user.html" th:href="@{/user/{username}(username=${#authentication.name})}">Моя страница</a>
             <a sec:authorize="!isAuthenticated()" href="../login.html" th:href="@{/login}">Войти</a>
             <a sec:authorize="isAuthenticated()" href="../logout.html" th:href="@{/logout}">Выйти</a>
         </nav>

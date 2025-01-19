@@ -1,18 +1,38 @@
-header {
-    background-color: red;
+.grid-container {
+    display: grid;
+    grid-template-columns: 10fr 90fr;
+    grid-template-rows: 100px 600px 100px;
+    grid-template-areas: 
+    "aside" 
+    "header" 
+    "main" 
+    "footer";
 }
 
-main {
-    background-color: blue;
+.grid-header {
+    grid-area: header;
+    background-color: aqua;
+    grid-column: 2/2;
+    grid-row: 1/1;
 }
 
-footer {
-    background-color: green;
+.grid-aside {
+    grid-area: aside;
+    background-color: cadetblue;
+    grid-column: 1/1;
+    grid-row: 1/4;
 }
 
-aside {
-    display: inline-block;
-    background-color: yellow;
-    height: 100%;
-    width: 20%;
+.grid-main {
+    grid-area: main;
+    background-color: aliceblue;
+    grid-column: 2/2;
+    grid-row: 2/2;
+}
+
+.grid-footer {
+    grid-area: footer;
+    background-color: aqua;
+    grid-column: 2/2;
+    grid-row: 3/3;
 }

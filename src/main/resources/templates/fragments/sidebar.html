@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -9,8 +11,12 @@
     <title>Document</title>
 </head>
 <body>
-    <aside th:fragment="aside">
-        боковая панель
+
+    <aside class="grid-aside" th:fragment="sidebar">
+        <nav>
+            <a sec:authorize="isAuthenticated()" href="../user.html" th:href="@{/user/{username}(username=${#authentication.name})}">Моя страница</a>
+        </nav>
     </aside>
+
 </body>
 </html>
