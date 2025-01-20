@@ -35,6 +35,21 @@ public class MentorEntity {
             inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private Set<SkillEntity> skillEntities = new HashSet<>();
 
+    @Column(name = "about")
+    private String about;
+
+    @Column(name = "jobTitle")
+    private String jobTitle;
+
+    @Column(name = "company")
+    private String company;
+
+    @Column(name = "confirm")
+    private boolean confirm = false; // в схему бд нужно добавить значение по умолчанию
+
+    @Column(name = "experience")
+    private int experience;
+
 
     public void addCategory(CategoryEntity categoryEntity) {
         this.categories.add(categoryEntity);
@@ -92,5 +107,45 @@ public class MentorEntity {
 
     public Set<SkillEntity> getSkills() {
         return skillEntities;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public boolean isConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(boolean confirm) {
+        this.confirm = confirm;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 }
