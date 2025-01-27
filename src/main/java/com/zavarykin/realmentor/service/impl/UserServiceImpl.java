@@ -21,65 +21,65 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final JdbcUserDetailsManager jdbcUserDetailsManager;
-    private final PasswordEncoder passwordEncoder;
-    private final EmailRepository emailRepository;
-
-    public UserServiceImpl(UserRepository userRepository,
-                           JdbcUserDetailsManager jdbcUserDetailsManager,
-                           PasswordEncoder passwordEncoder,
-                           EmailRepository emailRepository) {
-        this.userRepository = userRepository;
-        this.jdbcUserDetailsManager = jdbcUserDetailsManager;
-        this.passwordEncoder = passwordEncoder;
-        this.emailRepository = emailRepository;
-    }
-
-    @Override
-    public UserDto getByUsername(String username) {
-        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow();
-        UserDto userDto = new UserDto();
-        userDto.setId(userDto.getId());
-        userDto.setUsername(userEntity.getUsername());
-        userDto.setEmail(userEntity.getEmail().getAddress());
-        return userDto;
-    }
-
-    @Override
-    public void create(UserDto userDto) throws UserAlreadyExistException, EmailAlreadyExistException {
-        checkEmail(userDto.getEmail());
-        if (!jdbcUserDetailsManager.userExists(userDto.getUsername())) {
-            UserDetails user = User.builder()
-                    .username(userDto.getUsername())
-                    .password(passwordEncoder.encode(userDto.getPassword()))
-                    .roles(Role.USER.name())
-                    .disabled(true)
-                    .build();
-            jdbcUserDetailsManager.createUser(user);
-        } else {
-            throw new UserAlreadyExistException();
-        }
-        saveEmail(userDto);
-    }
-
-    @Override
-    public void saveUser(UserEntity userEntity) {
-        userRepository.save(userEntity);
-    }
-
-    private void checkEmail(String email) throws EmailAlreadyExistException {
-        if (emailRepository.findByAddress(email).isPresent()) {
-            throw new EmailAlreadyExistException();
-        }
-    }
-
-    private void saveEmail(UserDto userDto) {
-        UserEntity userEntity = userRepository.findByUsername(userDto.getUsername()).orElseThrow();
-        EmailEntity emailEntity = new EmailEntity();
-        emailEntity.setUserEntity(userEntity);
-        emailEntity.setAddress(userDto.getEmail());
-        emailRepository.save(emailEntity);
-    }
+//    private final UserRepository userRepository;
+//    private final JdbcUserDetailsManager jdbcUserDetailsManager;
+//    private final PasswordEncoder passwordEncoder;
+//    private final EmailRepository emailRepository;
+//
+//    public UserServiceImpl(UserRepository userRepository,
+//                           JdbcUserDetailsManager jdbcUserDetailsManager,
+//                           PasswordEncoder passwordEncoder,
+//                           EmailRepository emailRepository) {
+//        this.userRepository = userRepository;
+//        this.jdbcUserDetailsManager = jdbcUserDetailsManager;
+//        this.passwordEncoder = passwordEncoder;
+//        this.emailRepository = emailRepository;
+//    }
+//
+//    @Override
+//    public UserDto getByUsername(String username) {
+//        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow();
+//        UserDto userDto = new UserDto();
+//        userDto.setId(userDto.getId());
+//        userDto.setUsername(userEntity.getUsername());
+//        userDto.setEmail(userEntity.getEmail().getAddress());
+//        return userDto;
+//    }
+//
+//    @Override
+//    public void create(UserDto userDto) throws UserAlreadyExistException, EmailAlreadyExistException {
+//        checkEmail(userDto.getEmail());
+//        if (!jdbcUserDetailsManager.userExists(userDto.getUsername())) {
+//            UserDetails user = User.builder()
+//                    .username(userDto.getUsername())
+//                    .password(passwordEncoder.encode(userDto.getPassword()))
+//                    .roles(Role.USER.name())
+//                    .disabled(true)
+//                    .build();
+//            jdbcUserDetailsManager.createUser(user);
+//        } else {
+//            throw new UserAlreadyExistException();
+//        }
+//        saveEmail(userDto);
+//    }
+//
+//    @Override
+//    public void saveUser(UserEntity userEntity) {
+//        userRepository.save(userEntity);
+//    }
+//
+//    private void checkEmail(String email) throws EmailAlreadyExistException {
+//        if (emailRepository.findByAddress(email).isPresent()) {
+//            throw new EmailAlreadyExistException();
+//        }
+//    }
+//
+//    private void saveEmail(UserDto userDto) {
+//        UserEntity userEntity = userRepository.findByUsername(userDto.getUsername()).orElseThrow();
+//        EmailEntity emailEntity = new EmailEntity();
+//        emailEntity.setUserEntity(userEntity);
+//        emailEntity.setAddress(userDto.getEmail());
+//        emailRepository.save(emailEntity);
+//    }
 
 }

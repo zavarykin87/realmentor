@@ -24,77 +24,77 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
-    private final UserService userService;
-    private final ProfileService profileService;
-    private final ApplicationEventPublisher eventPublisher;
-    private final VerificationTokenService verificationTokenService;
-
-    public UserController(UserService userService,
-                          ProfileService profileService,
-                          ApplicationEventPublisher eventPublisher,
-                          VerificationTokenService verificationTokenService) {
-        this.userService = userService;
-        this.profileService = profileService;
-        this.eventPublisher = eventPublisher;
-        this.verificationTokenService = verificationTokenService;
-    }
-
-    @GetMapping("/user/{username}")
-    public String userPage(@PathVariable String username, Model model) throws EntityNotFoundException {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String currentUsername = userDetails.getUsername();
-        // должно быть отличие в view, когда пользователь заходит на свою или чужую страницу
-        if (username.equals(currentUsername)) {
-            model.addAttribute("owner", true);
-        } else {
-            model.addAttribute("owner", false);
-        }
-        UserDto userDto = userService.getByUsername(username);
-        model.addAttribute("userDto", userDto);
-        ProfileDto profileDto = profileService.getByUsername(username);
-        model.addAttribute("profileDto", profileDto);
-        return "user";
-    }
-
-    /**
-     * Метод вызывается после успешной аутентификации
-     * @return редирект на домашнюю страницу пользователя
-     */
-    @PostMapping("/user")
-    public String user() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String username = userDetails.getUsername();
-        return "redirect:/user/" + username;
-    }
-
-    @GetMapping("/user/registration")
-    public String registrationPage() {
-        return "registration";
-    }
-
-    @PostMapping("/user/registration")
-    public String registration(UserDto userDto, HttpServletRequest request, Model model) {
-        try {
-            userService.create(userDto);
-            String appUrl = request.getHeader("Origin");
-            eventPublisher.publishEvent(new OnRegistrationEvent(appUrl, userDto.getUsername(), userDto.getEmail()));
-        } catch (Exception e) {
-            model.addAttribute("message", e.getMessage());
-            return "registration";
-        }
-        model.addAttribute("userDto", userDto);
-        return "confirmation";
-    }
-
-    @GetMapping("/user/registrationConfirm")
-    public String registrationConfirm(@RequestParam("token") String token) {
-        VerificationTokenEntity verificationToken = verificationTokenService.getByToken(token);
-        UserEntity userEntity = verificationToken.getUserEntity();
-        userEntity.setEnabled(true);
-        userService.saveUser(userEntity);
-        return "redirect:/login";
-    }
+//    private final UserService userService;
+//    private final ProfileService profileService;
+//    private final ApplicationEventPublisher eventPublisher;
+//    private final VerificationTokenService verificationTokenService;
+//
+//    public UserController(UserService userService,
+//                          ProfileService profileService,
+//                          ApplicationEventPublisher eventPublisher,
+//                          VerificationTokenService verificationTokenService) {
+//        this.userService = userService;
+//        this.profileService = profileService;
+//        this.eventPublisher = eventPublisher;
+//        this.verificationTokenService = verificationTokenService;
+//    }
+//
+//    @GetMapping("/user/{username}")
+//    public String userPage(@PathVariable String username, Model model) throws EntityNotFoundException {
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String currentUsername = userDetails.getUsername();
+//        // должно быть отличие в view, когда пользователь заходит на свою или чужую страницу
+//        if (username.equals(currentUsername)) {
+//            model.addAttribute("owner", true);
+//        } else {
+//            model.addAttribute("owner", false);
+//        }
+//        UserDto userDto = userService.getByUsername(username);
+//        model.addAttribute("userDto", userDto);
+//        ProfileDto profileDto = profileService.getByUsername(username);
+//        model.addAttribute("profileDto", profileDto);
+//        return "user";
+//    }
+//
+//    /**
+//     * Метод вызывается после успешной аутентификации
+//     * @return редирект на домашнюю страницу пользователя
+//     */
+//    @PostMapping("/user")
+//    public String user() {
+//        SecurityContext securityContext = SecurityContextHolder.getContext();
+//        Authentication authentication = securityContext.getAuthentication();
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        String username = userDetails.getUsername();
+//        return "redirect:/user/" + username;
+//    }
+//
+//    @GetMapping("/user/registration")
+//    public String registrationPage() {
+//        return "registration";
+//    }
+//
+//    @PostMapping("/user/registration")
+//    public String registration(UserDto userDto, HttpServletRequest request, Model model) {
+//        try {
+//            userService.create(userDto);
+//            String appUrl = request.getHeader("Origin");
+//            eventPublisher.publishEvent(new OnRegistrationEvent(appUrl, userDto.getUsername(), userDto.getEmail()));
+//        } catch (Exception e) {
+//            model.addAttribute("message", e.getMessage());
+//            return "registration";
+//        }
+//        model.addAttribute("userDto", userDto);
+//        return "confirmation";
+//    }
+//
+//    @GetMapping("/user/registrationConfirm")
+//    public String registrationConfirm(@RequestParam("token") String token) {
+//        VerificationTokenEntity verificationToken = verificationTokenService.getByToken(token);
+//        UserEntity userEntity = verificationToken.getUserEntity();
+//        userEntity.setEnabled(true);
+//        userService.saveUser(userEntity);
+//        return "redirect:/login";
+//    }
 
 }

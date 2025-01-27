@@ -2,6 +2,7 @@ package com.zavarykin.realmentor.entity;
 
 
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.Set;
 
@@ -11,29 +12,26 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-    // TODO добавить валидацию на минимальное количество символов
+
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity")
     private Set<AuthorityEntity> authorities;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity")
-    private ProfileEntity profileEntity;
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity")
-    private VerificationTokenEntity verificationTokenEntity;
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity")
-    private EmailEntity email;
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity")
+//    private ProfileEntity profileEntity;
+//
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity")
+//    private VerificationTokenEntity verificationTokenEntity;
+//
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userEntity")
+//    private EmailEntity email;
 
     public String getUsername() {
         return username;
@@ -67,27 +65,37 @@ public class UserEntity {
         this.authorities = authorities;
     }
 
-    public ProfileEntity getProfileEntity() {
-        return profileEntity;
+    public void addAuthority(AuthorityEntity authority) {
+        this.authorities.add(authority);
+        authority.setUserEntity(this);
     }
 
-    public void setProfileEntity(ProfileEntity profileEntity) {
-        this.profileEntity = profileEntity;
+    public void removeAuthority(AuthorityEntity authority) {
+        this.authorities.remove(authority);
+        authority.setUserEntity(null);
     }
 
-    public VerificationTokenEntity getVerificationToken() {
-        return verificationTokenEntity;
-    }
-
-    public void setVerificationToken(VerificationTokenEntity verificationTokenEntity) {
-        this.verificationTokenEntity = verificationTokenEntity;
-    }
-
-    public EmailEntity getEmail() {
-        return email;
-    }
-
-    public void setEmail(EmailEntity email) {
-        this.email = email;
-    }
+//    public ProfileEntity getProfileEntity() {
+//        return profileEntity;
+//    }
+//
+//    public void setProfileEntity(ProfileEntity profileEntity) {
+//        this.profileEntity = profileEntity;
+//    }
+//
+//    public VerificationTokenEntity getVerificationToken() {
+//        return verificationTokenEntity;
+//    }
+//
+//    public void setVerificationToken(VerificationTokenEntity verificationTokenEntity) {
+//        this.verificationTokenEntity = verificationTokenEntity;
+//    }
+//
+//    public EmailEntity getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(EmailEntity email) {
+//        this.email = email;
+//    }
 }
