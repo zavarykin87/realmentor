@@ -8,10 +8,12 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
+  liquibase:
+    enabled: true
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: create # none / validate / create
+      ddl-auto: validate # none / validate / create
     properties:
       hibernate:
         format_sql: true

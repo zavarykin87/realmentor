@@ -14,43 +14,42 @@ import java.util.function.Function;
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
-//    private final ProfileRepository profileRepository;
-//    private final UserRepository userRepository;
-//
-//    public ProfileServiceImpl(ProfileRepository profileRepository,
-//                              UserRepository userRepository) {
-//        this.profileRepository = profileRepository;
-//        this.userRepository = userRepository;
-//    }
-//
-//    @Override
-//    public ProfileDto getByUsername(String username) throws EntityNotFoundException {
-//        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-//        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(null);
-//        if (entity == null) {
-//            return null;
-//        } else {
-//            return mapEntityToDto.apply(entity);
-//        }
-//    }
-//
-//    @Override
-//    public ProfileDto createOrUpdate(ProfileDto dto) {
-//        UserEntity userEntity = userRepository.findByUsername(dto.getUsername()).orElseThrow();
-//        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(new ProfileEntity());
-//        entity.setUserEntity(userEntity);
-//        entity.setFirstname(dto.getFirstname());
-//        entity.setLastname(dto.getLastname());
-//        entity = profileRepository.save(entity);
-//        return mapEntityToDto.apply(entity);
-//    }
-//
-//    private Function<ProfileEntity, ProfileDto> mapEntityToDto = entity -> {
-//      ProfileDto dto = new ProfileDto();
-//      dto.setId(entity.getId());
-//      dto.setUsername(entity.getUserEntity().getUsername());
-//      dto.setFirstname(entity.getFirstname());
-//      dto.setLastname(entity.getLastname());
-//      return dto;
-//    };
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+
+    public ProfileServiceImpl(ProfileRepository profileRepository,
+                              UserRepository userRepository) {
+        this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public ProfileDto getByUsername(String username) throws EntityNotFoundException {
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(null);
+        if (entity == null) {
+            return null;
+        } else {
+            return mapEntityToDto.apply(entity);
+        }
+    }
+
+    @Override
+    public ProfileDto createOrUpdate(ProfileDto dto) {
+        UserEntity userEntity = userRepository.findByUsername(dto.getUsername()).orElseThrow();
+        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(new ProfileEntity());
+        entity.setUserEntity(userEntity);
+        entity.setFirstname(dto.getFirstname());
+        entity.setLastname(dto.getLastname());
+        entity = profileRepository.save(entity);
+        return mapEntityToDto.apply(entity);
+    }
+
+    private Function<ProfileEntity, ProfileDto> mapEntityToDto = entity -> {
+      ProfileDto dto = new ProfileDto();
+      dto.setUsername(entity.getUserEntity().getUsername());
+      dto.setFirstname(entity.getFirstname());
+      dto.setLastname(entity.getLastname());
+      return dto;
+    };
 }

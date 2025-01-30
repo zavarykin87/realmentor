@@ -22,6 +22,14 @@ public class AuthorityEntity {
                 foreignKey = @ForeignKey(name = "fk_authority_to_user"))
     private UserEntity userEntity;
 
+    public AuthorityEntity(String authority, String username) {
+        this.authority = authority;
+        this.username = username;
+    }
+
+    public AuthorityEntity() {
+    }
+
     public String getAuthority() {
         return authority;
     }
@@ -52,12 +60,12 @@ public class AuthorityEntity {
         if (object == null || getClass() != object.getClass()) return false;
         AuthorityEntity that = (AuthorityEntity) object;
         return Objects.equals(authority, that.authority)
-                && Objects.equals(userEntity.getUsername(), that.userEntity.getUsername());
+                && Objects.equals(username, that.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authority, userEntity.getUsername());
+        return Objects.hash(authority, username);
     }
 
     public class DerivedId {
@@ -74,16 +82,8 @@ public class AuthorityEntity {
             return authority;
         }
 
-        public void setAuthority(String authority) {
-            this.authority = authority;
-        }
-
         public String getUsername() {
             return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
         }
 
         @Override

@@ -42,12 +42,12 @@ public class SecurityConfig {
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource, PasswordEncoder passwordEncoder) {
         JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-        UserDetails entity1 = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles(Role.ADMIN.name())
-                .build();
-        userDetailsManager.createUser(entity1);
+//        UserDetails entity1 = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder.encode("admin"))
+//                .roles(Role.ADMIN.name())
+//                .build();
+//        userDetailsManager.createUser(entity1);
 
         return userDetailsManager;
     }
