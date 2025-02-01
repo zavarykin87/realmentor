@@ -280,5 +280,33 @@
         </insert>
     </changeSet>
 
+    <changeSet id="14" author="zavarykin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="request_on_mentor"/>
+            </not>
+        </preConditions>
+        <createTable tableName="request_on_mentor">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_request_to_mentor"
+                             nullable="false"
+                             unique="true"/>
+            </column>
+            <column name="username" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="info" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="approve" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 
 </databaseChangeLog>

@@ -1,8 +1,10 @@
-package com.zavarykin.realmentor.service;
+package com.zavarykin.realmentor.service.listeners;
 
 import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
 import com.zavarykin.realmentor.repository.UserRepository;
+import com.zavarykin.realmentor.service.EmailService;
+import com.zavarykin.realmentor.service.VerificationTokenService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 

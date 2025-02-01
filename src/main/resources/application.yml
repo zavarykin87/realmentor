@@ -11,7 +11,7 @@ spring:
   liquibase:
     enabled: true
   jpa:
-    generate-ddl: false
+    generate-ddl: true
     hibernate:
       ddl-auto: validate # none / validate / create
     properties:

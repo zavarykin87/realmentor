@@ -68,4 +68,17 @@ public class MentorDto {
     public void setSkills(List<String> skills) {
         this.skills = skills;
     }
+
+    @Override
+    public String toString() {
+        return "MentorDto{" +
+                "username='" + username + '\'' +
+                ", about='" + about + '\'' +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", company='" + company + '\'' +
+                ", experience=" + experience +
+                ", specializations=" + specializations +
+                ", skills=" + skills +
+                '}';
+    }
 }

@@ -31,7 +31,7 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public MentorEntity createOrUpdateMentor(MentorDto dto) {
+    public MentorEntity createMentor(MentorDto dto) {
         ProfileEntity profileEntity = profileRepository.findById(dto.getUsername()).orElseThrow();
         MentorEntity mentorEntity = mentorRepository.findByUsername(dto.getUsername()).orElse(new MentorEntity());
         mentorEntity.setProfileEntity(profileEntity);
