@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <title>Mentor</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<main>
+    <div th:replace="~{fragments/sidebar :: aside}"></div>
+    <section>
+        <div class="form-container">
+            <h2>Для того, чтобы стать ментором, Вам необходимо заполнить анкету и отправить заявку администратору</h2>
+            <form th:action="@{/mentor}" method="post">
+                <input type="hidden" name="username" th:value="${#authentication.name}">
+                <input type="text" name="company" placeholder="Компания" required/>
+                <input type="text" name="jobTitle" placeholder="Должность" required/>
+                <input type="number" name="experience" placeholder="Опыт работы" required/>
+                <textarea name="about" cols="40" rows="4" placeholder="Расскажите о себе"></textarea>
+                <select name="specializations" id="specializations" multiple>
+                    <option th:each="spec : ${specializations}"
+                            th:value="${spec}"
+                            th:text="${spec}"
+                            value="">
+                    </option>
+                </select>
+
+                <h2>Поле для ввода с автозаполнением</h2>
+                <input type="text" id="myInput" placeholder="Начните вводить..." list="suggestions" onkeydown="checkEnter(event)">
+                <datalist id="suggestions">
+                    <option th:each="skill : ${skills}" th:value="${skill}"></option>
+                </datalist>
+
+                <div id="selectedValues"></div>
+                <input type="hidden" name="skills" id="hiddenValues">
+
+                <script>
+                    const selectedValues = [];
+
+                    function checkEnter(event) {
+                        if (event.key === 'Enter') {
+                        event.preventDefault(); // Предотвратить отправку формы
+                        addValue();
+                        }
+                    }
+
+                    function addValue() {
+                        const input = document.getElementById('myInput');
+                        const value = input.value.trim();
+
+                        if (value && !selectedValues.includes(value)) {
+                            selectedValues.push(value);
+                            updateSelectedValues();
+                            input.value = ''; // Очистить поле ввода
+                        }
+                    }
+
+                    function updateSelectedValues() {
+                        const display = document.getElementById('selectedValues');
+                        display.innerHTML = 'Выбранные значения: ' + selectedValues.join(', ');
+                        // Обновить скрытое поле с выбранными значениями
+                        document.getElementById('hiddenValues').value = selectedValues.join(',');
+                    }
+                </script>
+                <button type="submit">Далее</button>
+            </form>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

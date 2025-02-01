@@ -1,38 +1,112 @@
-.grid-container {
-    display: grid;
-    grid-template-columns: 10fr 90fr;
-    grid-template-rows: 100px 600px 100px;
-    grid-template-areas: 
-    "aside" 
-    "header" 
-    "main" 
-    "footer";
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Разделяет логотип и навигацию */
+}
+.header-login {
+    display: inline
+}
+header img {
+    height: 50px; /* Высота логотипа */
+}
+header nav {
+    margin-top: 10px;
+}
+header nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+header nav a:hover {
+    background-color: #45a049; /* Цвет фона при наведении */
+}
+main {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+}
+.main-login {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+aside {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    margin-right: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+aside a {
+    color: #333; /* Цвет текста ссылок в боковой панели */
+    text-decoration: none;
+    display: block; /* Ссылки занимают всю ширину */
+    padding: 5px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+aside a:hover {
+    background-color: #ddd; /* Цвет фона при наведении на ссылки боковой панели */
+}
+section {
+    flex: 1;
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+.form-container {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.grid-header {
-    grid-area: header;
-    background-color: aqua;
-    grid-column: 2/2;
-    grid-row: 1/1;
+.form-container h2 {
+    text-align: center;
 }
-
-.grid-aside {
-    grid-area: aside;
-    background-color: cadetblue;
-    grid-column: 1/1;
-    grid-row: 1/4;
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
-
-.grid-main {
-    grid-area: main;
-    background-color: aliceblue;
-    grid-column: 2/2;
-    grid-row: 2/2;
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
-
-.grid-footer {
-    grid-area: footer;
-    background-color: aqua;
-    grid-column: 2/2;
-    grid-row: 3/3;
+.form-container button:hover {
+    background-color: #45a049; /* Цвет фона при наведении */
 }

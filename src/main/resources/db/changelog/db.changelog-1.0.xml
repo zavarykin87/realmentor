@@ -2,15 +2,9 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-        http://www.liquibase.org/xml/ns/pro
-        http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
-    
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
     <changeSet id="1" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -19,10 +13,10 @@
         </preConditions>
         <createTable tableName="users">
             <column name="username" type="varchar">
-                <constraints 
-                        primaryKey="true" 
+                <constraints
+                        primaryKey="true"
                         primaryKeyName="pk_user"
-                        nullable="false" 
+                        nullable="false"
                         unique="true"/>
             </column>
             <column name="password" type="varchar">
@@ -33,7 +27,7 @@
             </column>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="2" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -51,7 +45,7 @@
             </column>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="3" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="authorities" columnName="authority"/>
@@ -172,13 +166,13 @@
     <changeSet id="8" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="categories"/>
+                <tableExists tableName="specializations"/>
             </not>
         </preConditions>
-        <createTable tableName="categories">
+        <createTable tableName="specializations">
             <column name="name" type="varchar">
                 <constraints primaryKey="true"
-                             primaryKeyName="pk_category"
+                             primaryKeyName="pk_specialization"
                              nullable="false"
                              unique="true"/>
             </column>
@@ -186,57 +180,6 @@
     </changeSet>
 
     <changeSet id="9" author="zavarykin">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="mentor_category"/>
-            </not>
-        </preConditions>
-        <createTable tableName="mentor_category">
-            <column name="mentor" type="varchar">
-                <constraints foreignKeyName="fk_mentor_to_category"
-                             references="mentors(username)"
-                             nullable="false"/>
-            </column>
-            <column name="category" type="varchar">
-                <constraints foreignKeyName="fk_category_to_mentor"
-                             references="categories(name)"
-                             nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="10" author="zavarykin">
-        <preConditions>
-            <columnExists tableName="mentor_category" columnName="mentor"/>
-            <columnExists tableName="mentor_category" columnName="category"/>
-        </preConditions>
-        <addPrimaryKey tableName="mentor_category"
-                       columnNames="mentor,category"
-                       constraintName="pk_mentor_category"/>
-    </changeSet>
-
-    <changeSet id="11" author="zavarykin">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="specializations"/>
-            </not>
-        </preConditions>
-        <createTable tableName="specializations">
-            <column name="name" type="varchar">
-                <constraints nullable="false"/>
-            </column>
-            <column name="category" type="varchar">
-                <constraints foreignKeyName="fk_specialization_to_category"
-                             references="categories(name)"
-                             nullable="false"/>
-            </column>
-        </createTable>
-        <addPrimaryKey tableName="specializations"
-                       columnNames="name,category"
-                       constraintName="pk_specialization"/>
-    </changeSet>
-
-    <changeSet id="12" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="mentor_specialization"/>
@@ -249,20 +192,14 @@
                              nullable="false"/>
             </column>
             <column name="specialization" type="varchar">
-                <constraints nullable="false"/>
-            </column>
-            <column name="category" type="varchar">
-                <constraints nullable="false"/>
+                <constraints foreignKeyName="fk_specialization_mentor"
+                             references="specializations(name)"
+                             nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="mentor_specialization"
-                                 baseColumnNames="specialization,category"
-                                 constraintName="fk_specialization_mentor"
-                                 referencedTableName="specializations"
-                                 referencedColumnNames="name,category"/>
     </changeSet>
 
-    <changeSet id="13" author="zavarykin">
+    <changeSet id="10" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <not>
                 <primaryKeyExists tableName="mentor_specialization"
@@ -270,11 +207,11 @@
             </not>
         </preConditions>
         <addPrimaryKey tableName="mentor_specialization"
-                       columnNames="mentor,specialization,category"
+                       columnNames="mentor,specialization"
                        constraintName="pk_mentor_specialization"/>
     </changeSet>
 
-    <changeSet id="14" author="zavarykin">
+    <changeSet id="11" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="skills"/>
@@ -290,7 +227,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="15" author="zavarykin">
+    <changeSet id="12" author="zavarykin">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="mentor_skill"/>
@@ -311,6 +248,36 @@
         <addPrimaryKey tableName="mentor_skill"
                        columnNames="mentor,skill"
                        constraintName="pk_mentor_skills"/>
+    </changeSet>
+
+    <changeSet id="13" author="zavarykin">
+        <preConditions>
+            <tableExists tableName="specializations"/>
+        </preConditions>
+        <insert tableName="specializations">
+            <column name="name" value="Программирование"/>
+        </insert>
+        <insert tableName="specializations">
+            <column name="name" value="Тестирование"/>
+        </insert>
+        <insert tableName="specializations">
+            <column name="name" value="Веб-дизайн"/>
+        </insert>
+        <insert tableName="specializations">
+            <column name="name" value="Администрирование"/>
+        </insert>
+        <insert tableName="specializations">
+            <column name="name" value="Архитектура"/>
+        </insert>
+        <insert tableName="specializations">
+            <column name="name" value="Аналитика"/>
+        </insert>
+        <insert tableName="specializations">
+            <column name="name" value="Менеджмент"/>
+        </insert>
+        <insert tableName="specializations">
+            <column name="name" value="Маркетинг"/>
+        </insert>
     </changeSet>
 
 

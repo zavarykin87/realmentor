@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log out</title>
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <title>Logout</title>
 </head>
 <body>
-    <form th:action="@{/logout}" method="post">
-        <h2>Are you sure you want to log out?</h2>
-        <button type="submit">Log out</button>
-    </form>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <div th:replace="~{fragments/sidebar :: aside}"></div>
+
+    <section>
+        <div class="form-container">
+            <h2>Вы действительно хотите выйти из системы?</h2>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Выйти</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

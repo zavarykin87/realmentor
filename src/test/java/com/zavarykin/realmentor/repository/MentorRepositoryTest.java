@@ -1,6 +1,5 @@
 package com.zavarykin.realmentor.repository;
 
-import com.zavarykin.realmentor.entity.CategoryEntity;
 import com.zavarykin.realmentor.entity.MentorEntity;
 import com.zavarykin.realmentor.entity.ProfileEntity;
 import com.zavarykin.realmentor.entity.UserEntity;
@@ -25,15 +24,11 @@ class MentorRepositoryTest {
     @Autowired
     private MentorRepository mentorRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
     private UserRepository userRepository;
 
     private UserEntity user;
     private ProfileEntity profile;
     private MentorEntity mentor;
-    private CategoryEntity category1;
-    private CategoryEntity category2;
 
     @BeforeEach
     public void initEntities() {
@@ -52,25 +47,12 @@ class MentorRepositoryTest {
         mentor.setExperience(10);
         testEntityManager.persist(mentor);
 
-        category1 = new CategoryEntity("IT");
-        category2 = new CategoryEntity("Business");
-        testEntityManager.persist(category1);
-        testEntityManager.persist(category2);
     }
 
     @Test
     @DisplayName("findByUsername_ok")
     public void findByUsername_ok() {
         assertEquals(true, mentorRepository.findByUsername("admin").isPresent());
-    }
-
-    @Test
-    @DisplayName("addCategory_ok")
-    public void addCategory_ok() {
-        mentor.addCategory(category1);
-        mentor.addCategory(category2);
-
-        assertEquals(2, mentorRepository.findByUsername("admin").get().getCategories().size());
     }
 
 }

@@ -5,27 +5,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in</title>
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <title>Login</title>
 </head>
 <body>
-    <h1>Введите ваш логин и пароль</h1>
-    <div th:if="${param.hello}">
-        hello
-    </div>
-    <div th:if="${param.error}">
-        Invalid username and password.
-    </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
-    <form th:action="@{/login}" method="post">
-        <input type="text" name="username" placeholder="Username"/>
-        <input type="password" name="password" placeholder="Password"/>
-        <button type="submit">Sign in</button>
-    </form>
-    <div sec:authorize="!isAuthenticated()">
-        <h2>или зарегистрируйтесь</h2>
-        <a href="registration.html" th:href="@{/user/registration}">Регистрация</a>
-    </div>
+
+<div th:replace="~{fragments/header :: header}"></div>
+        
+<main>
+    <div th:replace="~{fragments/sidebar :: aside}"></div>
+    
+    <section>
+        <div class="form-container">
+            <h2>Вход</h2>
+            <div th:if="${param.error}">Неверный логин или пароль</div>
+            <div th:if="${param.logout}">Вы вышли из системы</div>
+            <form th:action="@{/login}" method="post">
+                <input type="text" name="username" placeholder="Логин" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+            </form>
+            <h2>Регистрация</h2>
+            <div th:if="${message != null}" th:text="${message}"></div>
+            <form th:action="@{/user/registration}" method="post">
+                <input type="text" name="username" placeholder="Имя" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <div th:if="${userDto != null}">На вашу почту
+                <span th:text="${userDto.email}"></span>
+                отправлена ссылка для подтверждения регистрации.</div>
+        </div>
+    </section>
+</main>
+    
+<div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

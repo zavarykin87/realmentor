@@ -27,19 +27,16 @@ public class MentorEntity {
     @Column(name = "company", nullable = false)
     private String company;
 
+    @Column(name = "experience", nullable = false)
+    private int experience;
+
     @Column(name = "confirm", nullable = false)
     private boolean confirm;
 
     @ManyToMany
-    @JoinTable(name = "mentor_category",
-            joinColumns = @JoinColumn(name = "mentor"),
-            inverseJoinColumns = @JoinColumn(name = "category"))
-    private Set<CategoryEntity> categories = new HashSet<>();
-
-    @ManyToMany
     @JoinTable(name = "mentor_specialization",
             joinColumns = @JoinColumn(name = "mentor"),
-            inverseJoinColumns = {@JoinColumn(name = "specialization"), @JoinColumn(name = "category")})
+            inverseJoinColumns = @JoinColumn(name = "specialization"))
     private Set<SpecializationEntity> specializations = new HashSet<>();
 
     @ManyToMany
@@ -47,9 +44,6 @@ public class MentorEntity {
             joinColumns = @JoinColumn(name = "mentor"),
             inverseJoinColumns = @JoinColumn(name = "skill"))
     private Set<SkillEntity> skills = new HashSet<>();
-
-    @Column(name = "experience", nullable = false)
-    private int experience;
 
     public String getUsername() {
         return username;
@@ -105,24 +99,6 @@ public class MentorEntity {
 
     public void setExperience(int experience) {
         this.experience = experience;
-    }
-
-    public Set<CategoryEntity> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<CategoryEntity> categories) {
-        this.categories = categories;
-    }
-
-    public void addCategory(CategoryEntity category) {
-        this.categories.add(category);
-        category.getMentorEntities().add(this);
-    }
-
-    public void removeCategory(CategoryEntity category) {
-        this.categories.remove(category);
-        category.getMentorEntities().remove(category);
     }
 
     public Set<SpecializationEntity> getSpecializations() {

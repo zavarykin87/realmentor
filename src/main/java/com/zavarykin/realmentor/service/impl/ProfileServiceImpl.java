@@ -26,7 +26,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileDto getByUsername(String username) throws EntityNotFoundException {
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(null);
+        ProfileEntity entity = profileRepository.findById(userEntity.getUsername()).orElse(null);
         if (entity == null) {
             return null;
         } else {
@@ -37,7 +37,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileDto createOrUpdate(ProfileDto dto) {
         UserEntity userEntity = userRepository.findByUsername(dto.getUsername()).orElseThrow();
-        ProfileEntity entity = profileRepository.findByUserEntity(userEntity).orElse(new ProfileEntity());
+        ProfileEntity entity = profileRepository.findById(userEntity.getUsername()).orElse(new ProfileEntity());
         entity.setUserEntity(userEntity);
         entity.setFirstname(dto.getFirstname());
         entity.setLastname(dto.getLastname());

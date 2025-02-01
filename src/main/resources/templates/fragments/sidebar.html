@@ -12,9 +12,15 @@
 </head>
 <body>
 
-    <aside class="grid-aside" th:fragment="sidebar">
+    <aside th:fragment="sidebar">
+        <h2>Боковая панель</h2>
         <nav>
-            <a sec:authorize="isAuthenticated()" href="../user.html" th:href="@{/user/{username}(username=${#authentication.name})}">Моя страница</a>
+            <a href="../index.html" th:href="@{/}">На главную</a>
+            <div sec:authorize="isAuthenticated()">
+                <a href="../user.html" th:href="@{/user/{username}(username=${#authentication.name})}">Моя страница</a>
+                <a href="../profile.html" th:href="@{/profile}">Редактировать профиль</a>
+                <a sec:authorize="hasRole('ROLE_MENTOR') == false" href="../mentor.html" th:href="@{/mentor}">Стать ментором</a>
+            </div>
         </nav>
     </aside>
 

@@ -82,10 +82,10 @@ public class UserController {
             eventPublisher.publishEvent(new OnRegistrationEvent(appUrl, userDto.getUsername(), userDto.getEmail()));
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
-            return "registration";
+            return "login";
         }
         model.addAttribute("userDto", userDto);
-        return "confirmation";
+        return "login";
     }
 
     @GetMapping("/user/registrationConfirm")

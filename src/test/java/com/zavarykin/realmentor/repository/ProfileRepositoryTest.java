@@ -33,7 +33,7 @@ class ProfileRepositoryTest {
         profileEntity.setUserEntity(userEntity);
         testEntityManager.persist(profileEntity);
 
-        assertEquals(true, profileRepository.findByUsername("admin").isPresent());
+        assertEquals(true, profileRepository.findById("admin").isPresent());
     }
 
 

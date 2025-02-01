@@ -9,12 +9,14 @@
 </head>
 <body>
 
-    <header class="grid-header" th:fragment="header">
-        <h2>RealMentor Project</h2>
+    <header th:fragment="header">
+<!--        <img src="logo.png" alt="Логотип" /> &lt;!&ndash; Замените "logo.png" на путь к вашему логотипу &ndash;&gt;-->
+        <div sec:authorize="isAuthenticated()">
+            <h1>Добро пожаловать <span th:text="${#authentication.name}"></span> !</h1>
+        </div>
         <nav>
-            <a href="../index.html" th:href="@{/}">На главную</a>
-            <a sec:authorize="!isAuthenticated()" href="../login.html" th:href="@{/login}">Войти</a>
-            <a sec:authorize="isAuthenticated()" href="../logout.html" th:href="@{/logout}">Выйти</a>
+            <a sec:authorize="!isAuthenticated()" href="../login.html" th:href="@{/login}">Вход</a>
+            <a sec:authorize="isAuthenticated()" href="../logout.html" th:href="@{/logout}">Выход</a>
         </nav>
     </header>
     
