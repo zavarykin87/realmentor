@@ -110,3 +110,17 @@ footer {
 .form-container button:hover {
     background-color: #45a049; /* Цвет фона при наведении */
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}

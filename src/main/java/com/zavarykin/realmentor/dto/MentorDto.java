@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import java.util.List;
 
 public class MentorDto {
+    private Long id;
     private String username;
     private String about;
     private String jobTitle;
@@ -12,6 +13,14 @@ public class MentorDto {
     private int experience;
     private List<String> specializations;
     private List<String> skills;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
