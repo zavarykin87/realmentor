@@ -39,9 +39,9 @@ class UserRepositoryTest {
         UserEntity user = new UserEntity();
         user.setUsername("user");
         user.setPassword("password");
-        user.addAuthority(new AuthorityEntity("ROLE_USER", "user"));
-        user.addAuthority(new AuthorityEntity("ROLE_USER", "user")); // не должен сохраниться
-        user.addAuthority(new AuthorityEntity("ROLE_MENTOR", "user"));
+        user.addAuthority(new AuthorityEntity("ROLE_USER", user));
+        user.addAuthority(new AuthorityEntity("ROLE_USER", user)); // не должен сохраниться
+        user.addAuthority(new AuthorityEntity("ROLE_MENTOR", user));
         testEntityManager.persist(user);
         assertEquals(2, userRepository.findByUsername("user").get().getAuthorities().size());
     }

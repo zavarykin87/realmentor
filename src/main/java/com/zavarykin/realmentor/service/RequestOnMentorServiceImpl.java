@@ -1,11 +1,13 @@
 package com.zavarykin.realmentor.service;
 
 import com.zavarykin.realmentor.dto.RequestOnMentorDto;
+import com.zavarykin.realmentor.entity.AuthorityEntity;
 import com.zavarykin.realmentor.entity.MentorEntity;
 import com.zavarykin.realmentor.entity.RequestOnMentorEntity;
+import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.repository.MentorRepository;
 import com.zavarykin.realmentor.repository.RequestOnMentorRepository;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import com.zavarykin.realmentor.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +19,15 @@ public class RequestOnMentorServiceImpl implements RequestOnMentorService {
 
     private final RequestOnMentorRepository requestOnMentorRepository;
     private final MentorRepository mentorRepository;
-    private final JdbcUserDetailsManager userDetailsManager;
+    private final UserRepository userRepository;
+
 
     public RequestOnMentorServiceImpl(RequestOnMentorRepository requestOnMentorRepository,
                                       MentorRepository mentorRepository,
-                                      JdbcUserDetailsManager userDetailsManager) {
+                                      UserRepository userRepository) {
         this.requestOnMentorRepository = requestOnMentorRepository;
         this.mentorRepository = mentorRepository;
-        this.userDetailsManager = userDetailsManager;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -37,11 +40,13 @@ public class RequestOnMentorServiceImpl implements RequestOnMentorService {
     public void approve(Long id) {
         RequestOnMentorEntity requestOnMentor = requestOnMentorRepository.findById(id).orElseThrow();
         MentorEntity mentorEntity = mentorRepository.findByUsername(requestOnMentor.getUsername()).orElseThrow();
+        UserEntity userEntity = userRepository.findByUsername(mentorEntity.getUsername()).orElseThrow();
         requestOnMentor.setApprove(true);
         mentorEntity.setConfirm(true);
+        userEntity.addAuthority(new AuthorityEntity("ROLE_MENTOR", userEntity));
         requestOnMentorRepository.save(requestOnMentor);
         mentorRepository.save(mentorEntity);
-        // TODO добавить пользователю роль MENTOR
+        userRepository.save(userEntity);
     }
 
     private final Function<RequestOnMentorEntity, RequestOnMentorDto> mapEntityToDto = entity -> {

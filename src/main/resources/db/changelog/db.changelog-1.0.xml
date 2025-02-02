@@ -35,6 +35,12 @@
             </not>
         </preConditions>
         <createTable tableName="authorities">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_authority"
+                             nullable="false"
+                             unique="true"/>
+            </column>
             <column name="authority" type="varchar">
                 <constraints nullable="false"/>
             </column>
@@ -44,19 +50,6 @@
                              nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet id="3" author="zavarykin">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="authorities" columnName="authority"/>
-            <columnExists tableName="authorities" columnName="username"/>
-            <not>
-                <primaryKeyExists tableName="authorities"/>
-            </not>
-        </preConditions>
-        <addPrimaryKey tableName="authorities"
-                       columnNames="authority,username"
-                       constraintName="pk_authority"/>
     </changeSet>
 
     <changeSet id="4" author="zavarykin">

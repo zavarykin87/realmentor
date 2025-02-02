@@ -22,7 +22,7 @@ public class UserEntity {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<AuthorityEntity> authorities = new HashSet<>();
 
     @OneToOne(mappedBy = "userEntity")
