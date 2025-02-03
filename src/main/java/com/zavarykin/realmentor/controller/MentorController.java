@@ -7,7 +7,6 @@ import com.zavarykin.realmentor.service.MentorService;
 import com.zavarykin.realmentor.service.RequestOnMentorService;
 import com.zavarykin.realmentor.service.SkillService;
 import com.zavarykin.realmentor.service.SpecializationService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -77,6 +76,31 @@ public class MentorController {
             requestOnMentorService.approve(ids[i]);
         }
         return "requestOnMentor";
+    }
+
+    @GetMapping("/mentors")
+    public String getAllMentors(Model model) {
+        List<MentorDto> mentors = mentorService.getAllMentors();
+        List<String> specializations = specializationService.getAllSpecializations();
+        List<String> skills = skillService.getAllSkills();
+        model.addAttribute("specializations", specializations);
+        model.addAttribute("skills", skills );
+        model.addAttribute("mentors", mentors);
+        return "mentors";
+    }
+
+    @PostMapping("/mentors")
+    public String getFilteredMentors(@RequestParam(value = "specializations", required = false) List<String> specializations,
+                                     @RequestParam(value = "skills", required = false) List<String> skills,
+                                     @RequestParam(value = "experience", required = false) Integer experience,
+                                     @RequestParam(value = "company", required = false) String company,
+                                     @RequestParam(value = "jobTitle", required = false) String jobTitle,
+                                     Model model) {
+        List<MentorDto> mentors = mentorService.findByFilter(specializations, skills, experience, company,jobTitle);
+        model.addAttribute("specializations", specializations);
+        model.addAttribute("skills", skills );
+        model.addAttribute("mentors", mentors);
+        return "mentors";
     }
 
 }
