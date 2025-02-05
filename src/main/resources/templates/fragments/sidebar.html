@@ -19,6 +19,7 @@
             <a href="../mentors.html" th:href="@{/mentors}">Менторы</a>
             <div sec:authorize="isAuthenticated()">
                 <a href="../user.html" th:href="@{/user/{username}(username=${#authentication.name})}">Моя страница</a>
+                <a href="../messages.html" th:href="@{/messages}">Сообщения</a>
                 <a href="../profile.html" th:href="@{/profile}">Редактировать профиль</a>
                 <a sec:authorize="hasRole('ROLE_MENTOR') == false" th:href="@{/mentor}">Стать ментором</a>
                 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/mentor/requests}">Заявки на ментора</a>

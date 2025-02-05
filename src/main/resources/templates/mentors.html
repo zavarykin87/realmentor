@@ -36,6 +36,8 @@
                 <td th:text="${mentor.about}"></td>
                 <td><span th:each="spec : ${mentor.specializations}" th:text="${spec}"></span></td>
                 <td><span th:each="skill : ${mentor.skills}" th:text="${skill}"></span></td>
+                <td><a th:href="@{/chat/{username}(username=${mentor.username})}">Написать</a></td>
+                <td><a th:href="@{/user/{username}(username=${mentor.username})}">На страницу</a></td>
             </tr>
             </tbody>
         </table>

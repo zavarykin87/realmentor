@@ -38,6 +38,7 @@
                 <p th:text="*{username}">username</p>
                 <p th:text="*{firstname}">firstname</p>
                 <p th:text="*{lastname}">lastname</p>
+                <a href="chat.html" th:href="@{/chat/{username}(username=${profileDto.username})}">Написать</a>
             </div>
         </div>
 
