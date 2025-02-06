@@ -1,5 +1,6 @@
 package com.zavarykin.realmentor.dto;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 public class MessageDto {
@@ -9,7 +10,7 @@ public class MessageDto {
     private String sender;
     private String receiver;
     private String content;
-    private OffsetDateTime dateTime;
+    private LocalDateTime dateTime;
 
     public String getSender() {
         return sender;
@@ -51,11 +52,11 @@ public class MessageDto {
         this.chatId = chatId;
     }
 
-    public OffsetDateTime getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(OffsetDateTime dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 }

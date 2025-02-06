@@ -2,16 +2,17 @@ package com.zavarykin.realmentor.controller;
 
 import com.zavarykin.realmentor.dto.MentorDto;
 import com.zavarykin.realmentor.dto.RequestOnMentorDto;
+import com.zavarykin.realmentor.dto.RequestToMentoringDto;
 import com.zavarykin.realmentor.event.OnRequestToBeMentorEvent;
-import com.zavarykin.realmentor.service.MentorService;
-import com.zavarykin.realmentor.service.RequestOnMentorService;
-import com.zavarykin.realmentor.service.SkillService;
-import com.zavarykin.realmentor.service.SpecializationService;
+import com.zavarykin.realmentor.service.*;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,17 +27,20 @@ public class MentorController {
     private final MentorService mentorService;
     private final ApplicationEventPublisher eventPublisher;
     private final RequestOnMentorService requestOnMentorService;
+    private final RequestToMentoringService requestToMentoringService;
 
     public MentorController(SpecializationService specializationService,
                             SkillService skillService,
                             MentorService mentorService,
                             ApplicationEventPublisher eventPublisher,
-                            RequestOnMentorService requestOnMentorService) {
+                            RequestOnMentorService requestOnMentorService,
+                            RequestToMentoringService requestToMentoringService) {
         this.specializationService = specializationService;
         this.skillService = skillService;
         this.mentorService = mentorService;
         this.eventPublisher = eventPublisher;
         this.requestOnMentorService = requestOnMentorService;
+        this.requestToMentoringService = requestToMentoringService;
     }
 
     @GetMapping("/mentor")
@@ -101,6 +105,21 @@ public class MentorController {
         model.addAttribute("skills", skills );
         model.addAttribute("mentors", mentors);
         return "mentors";
+    }
+
+    @GetMapping("/requestToMentoring/{mentor}")
+    public String requestToMentoringForm(@PathVariable String mentor, Model model) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String mentee = userDetails.getUsername();
+        model.addAttribute("mentor", mentor);
+        model.addAttribute("mentee", mentee);
+        return "requestToMentoring";
+    }
+
+    @PostMapping("/requestToMentoring")
+    public String requestToMentoring(RequestToMentoringDto request) {
+        requestToMentoringService.save(request);
+        return "redirect:/user/" + request.getMentee();
     }
 
 }

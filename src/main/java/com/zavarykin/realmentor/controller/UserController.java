@@ -1,11 +1,13 @@
 package com.zavarykin.realmentor.controller;
 
+import com.zavarykin.realmentor.dto.MentorDto;
 import com.zavarykin.realmentor.dto.ProfileDto;
 import com.zavarykin.realmentor.dto.UserDto;
 import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.entity.VerificationTokenEntity;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
 import com.zavarykin.realmentor.exception.EntityNotFoundException;
+import com.zavarykin.realmentor.service.MentorService;
 import com.zavarykin.realmentor.service.ProfileService;
 import com.zavarykin.realmentor.service.UserService;
 import com.zavarykin.realmentor.service.VerificationTokenService;
@@ -28,15 +30,18 @@ public class UserController {
     private final ProfileService profileService;
     private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenService verificationTokenService;
+    private final MentorService mentorService;
 
     public UserController(UserService userService,
                           ProfileService profileService,
                           ApplicationEventPublisher eventPublisher,
-                          VerificationTokenService verificationTokenService) {
+                          VerificationTokenService verificationTokenService,
+                          MentorService mentorService) {
         this.userService = userService;
         this.profileService = profileService;
         this.eventPublisher = eventPublisher;
         this.verificationTokenService = verificationTokenService;
+        this.mentorService = mentorService;
     }
 
     @GetMapping("/user/{username}")
@@ -50,9 +55,11 @@ public class UserController {
             model.addAttribute("owner", false);
         }
         UserDto userDto = userService.getByUsername(username);
-        model.addAttribute("userDto", userDto);
         ProfileDto profileDto = profileService.getByUsername(username);
+        MentorDto mentorDto = mentorService.getByUsername(username);
+        model.addAttribute("userDto", userDto);
         model.addAttribute("profileDto", profileDto);
+        model.addAttribute("mentorDto", mentorDto);
         return "user";
     }
 

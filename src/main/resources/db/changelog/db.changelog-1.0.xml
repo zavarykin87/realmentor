@@ -355,6 +355,37 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="17" author="zavarykin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="request_to_mentoring"/>
+            </not>
+        </preConditions>
+        <createTable tableName="request_to_mentoring">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_request_to_mentoring"
+                             nullable="false"
+                             unique="true"/>
+            </column>
+            <column name="mentor" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mentee" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="info" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="approve" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 
 </databaseChangeLog>

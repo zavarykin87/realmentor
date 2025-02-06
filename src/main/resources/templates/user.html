@@ -41,9 +41,22 @@
                 <a href="chat.html" th:href="@{/chat/{username}(username=${profileDto.username})}">Написать</a>
             </div>
         </div>
-
-        <div>
-            тут еще будет лента новостей
+        <!-- если пользователь является ментором -->
+        <div th:if="${mentorDto != null}">
+            <h2>Профиль ментора</h2>
+            <div th:text="${mentorDto.company}"></div>
+            <div th:text="${mentorDto.jobTitle}"></div>
+            <div th:text="${mentorDto.experience}"></div>
+            <div th:text="${mentorDto.about}"></div>
+            <ul th:each="spec : ${mentorDto.specializations}">
+                <li th:text="${spec}"></li>
+            </ul>
+            <ul th:each="skill : ${mentorDto.skills}">
+                <li th:text="${skill}"></li>
+            </ul>
+            <div th:if="${!owner}">
+                <a th:href="@{/requestToMentoring/{mentor}(mentor=${mentorDto.username})}">Подать заявку на консультацию</a>
+            </div>
         </div>
     </section>
 </main>

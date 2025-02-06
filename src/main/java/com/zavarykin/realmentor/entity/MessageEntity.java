@@ -2,6 +2,7 @@ package com.zavarykin.realmentor.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -22,7 +23,7 @@ public class MessageEntity {
     private String content;
 
     @Column(name = "date_time", nullable = false)
-    private OffsetDateTime dateTime;
+    private LocalDateTime dateTime;
 
     @ManyToOne()
     @JoinColumn(name = "chat_id", referencedColumnName = "id", nullable = false,
@@ -61,11 +62,11 @@ public class MessageEntity {
         this.content = content;
     }
 
-    public OffsetDateTime getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(OffsetDateTime dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 

@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class ChatController {
         MessageEntity message = new MessageEntity();
         message.setSender(chatMessage.getSender());
         message.setReceiver(chatMessage.getReceiver());
-        message.setDateTime(OffsetDateTime.now());
+        message.setDateTime(LocalDateTime.now());
         message.setContent(chatMessage.getContent());
         message.setChatEntity(chatEntity);
         chatEntity.addMessage(message);

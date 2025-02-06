@@ -11,7 +11,9 @@ public interface MentorService {
 
     List<MentorDto> getAllMentors();
 
-    List<MentorDto> findByFilter(List<String> specialization, List<String> skills, Integer experience,
-                                 String company, String jobTitle);
+    List<MentorDto> findByFilter(List<String> specialization, List<String> skills,
+                                 Integer experience, String company, String jobTitle);
+
+    MentorDto getByUsername(String username);
 
 }

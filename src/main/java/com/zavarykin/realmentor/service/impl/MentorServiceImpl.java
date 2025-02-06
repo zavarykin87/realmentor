@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -80,7 +81,15 @@ public class MentorServiceImpl implements MentorService {
                 .collect(Collectors.toList());
     }
 
-
+    @Override
+    public MentorDto getByUsername(String username) {
+        Optional<MentorEntity> optional = mentorRepository.findByUsername(username);
+        if (optional.isEmpty()) {
+            return null;
+        } else {
+            return mapEntityToDto.apply(optional.get());
+        }
+    }
 
     private final Function<MentorEntity, MentorDto> mapEntityToDto = entity -> {
       MentorDto mentorDto = new MentorDto();
