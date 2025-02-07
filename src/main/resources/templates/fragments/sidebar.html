@@ -23,6 +23,7 @@
                 <a href="../profile.html" th:href="@{/profile}">Редактировать профиль</a>
                 <a sec:authorize="hasRole('ROLE_MENTOR') == false" th:href="@{/mentor}">Стать ментором</a>
                 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/mentor/requests}">Заявки на ментора</a>
+                <a sec:authorize="hasRole('ROLE_MENTOR')" th:href="@{/mentoring}">Заявки на обучение</a>
             </div>
         </nav>
     </aside>

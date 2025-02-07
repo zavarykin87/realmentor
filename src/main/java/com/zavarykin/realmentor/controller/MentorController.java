@@ -122,4 +122,28 @@ public class MentorController {
         return "redirect:/user/" + request.getMentee();
     }
 
+    @GetMapping("/mentoring")
+    @PreAuthorize("hasRole('ROLE_MENTOR')")
+    public String getAllRequestsToMentoring(Model model) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        List<RequestToMentoringDto> requests = requestToMentoringService.getAllByMentor(username);
+        model.addAttribute("requests", requests);
+        return "mentoring";
+    }
+
+    @PostMapping("/request/delete")
+    @PreAuthorize("hasRole('ROLE_MENTOR')")
+    public String deleteRequest(@RequestParam(name = "id") Long id) {
+        requestToMentoringService.deleteById(id);
+        return "redirect:/mentoring";
+    }
+
+    @PostMapping("/request/approve")
+    @PreAuthorize("hasRole('ROLE_MENTOR')")
+    public String approveRequest(@RequestParam(name = "id") Long id) {
+        requestToMentoringService.approve(id);
+        return "redirect:/mentoring";
+    }
+
 }
