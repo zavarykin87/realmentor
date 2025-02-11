@@ -1,4 +1,4 @@
-package com.zavarykin.realmentor.service;
+package com.zavarykin.realmentor.service.impl;
 
 import com.zavarykin.realmentor.dto.RequestOnMentorDto;
 import com.zavarykin.realmentor.entity.AuthorityEntity;
@@ -8,6 +8,7 @@ import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.repository.MentorRepository;
 import com.zavarykin.realmentor.repository.RequestOnMentorRepository;
 import com.zavarykin.realmentor.repository.UserRepository;
+import com.zavarykin.realmentor.service.RequestOnMentorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

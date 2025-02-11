@@ -132,16 +132,16 @@ public class MentorController {
         return "mentoring";
     }
 
-    @PostMapping("/request/delete")
+    @PostMapping("/mentoring/request/delete")
     @PreAuthorize("hasRole('ROLE_MENTOR')")
     public String deleteRequest(@RequestParam(name = "id") Long id) {
         requestToMentoringService.deleteById(id);
         return "redirect:/mentoring";
     }
 
-    @PostMapping("/request/approve")
+    @PostMapping("/mentoring/request/approve")
     @PreAuthorize("hasRole('ROLE_MENTOR')")
-    public String approveRequest(@RequestParam(name = "id") Long id) {
+    public String approveRequest(@RequestParam(name = "id") Long id) throws Exception {
         requestToMentoringService.approve(id);
         return "redirect:/mentoring";
     }

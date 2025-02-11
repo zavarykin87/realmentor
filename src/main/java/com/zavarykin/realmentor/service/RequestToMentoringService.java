@@ -12,5 +12,5 @@ public interface RequestToMentoringService {
 
     void deleteById(Long id);
 
-    void approve(Long id);
+    void approve(Long id) throws Exception;
 }

@@ -29,3 +29,10 @@ spring:
       "[mail.smtp.auth]": true
       "[mail.smtp.starttls.enable]": true
       "[mail.debug]": false
+zoom:
+  oauth2:
+    issuer: https://zoom.us/oauth
+    client-id: K8zZCkThTL60qs0zz5jL2g
+    client-secret: coDaz8AGAj2V5ibefbjFKV6PVjxI8rxO
+    account-id: E5tNFtUxQpijXL_dPfeuxA
+    api-url: https://api.zoom.us

@@ -4,6 +4,7 @@ import com.zavarykin.realmentor.dto.RequestToMentoringDto;
 import com.zavarykin.realmentor.entity.RequestToMentoringEntity;
 import com.zavarykin.realmentor.repository.RequestToMentoringRepository;
 import com.zavarykin.realmentor.service.RequestToMentoringService;
+import com.zavarykin.realmentor.service.ZoomApiService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,9 +16,12 @@ import java.util.stream.Collectors;
 public class RequestToMentoringServiceImpl implements RequestToMentoringService {
 
     private final RequestToMentoringRepository mentoringRepository;
+    private final ZoomApiService zoomApiService;
 
-    public RequestToMentoringServiceImpl(RequestToMentoringRepository mentoringRepository) {
+    public RequestToMentoringServiceImpl(RequestToMentoringRepository mentoringRepository,
+                                         ZoomApiService zoomApiService) {
         this.mentoringRepository = mentoringRepository;
+        this.zoomApiService = zoomApiService;
     }
 
     @Override
@@ -39,8 +43,14 @@ public class RequestToMentoringServiceImpl implements RequestToMentoringService 
     }
 
     @Override
-    public void approve(Long id) {
-        // TODO
+    public void approve(Long id) throws Exception {
+        RequestToMentoringEntity requestToMentoring = mentoringRepository.findById(id).orElseThrow();
+        zoomApiService.createMeeting(
+                requestToMentoring.getMentor(),
+                requestToMentoring.getMentee(),
+                requestToMentoring.getDateTime().toString());
+        requestToMentoring.setApprove(true);
+        mentoringRepository.save(requestToMentoring);
     }
 
     private final Function<RequestToMentoringDto, RequestToMentoringEntity> mapDtoToEntity = dto -> {

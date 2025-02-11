@@ -386,6 +386,49 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="18" author="zavarykin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="meetings"/>
+            </not>
+        </preConditions>
+        <createTable tableName="meetings">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_meetings"
+                             nullable="false"
+                             unique="true"/>
+            </column>
+            <column name="mentor" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mentee" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_url" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="join_url" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="topic" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="host_email" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duration" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meeting_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 
 </databaseChangeLog>

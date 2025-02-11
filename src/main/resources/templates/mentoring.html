@@ -35,13 +35,13 @@
                 <td th:text="${request.info}"></td>
                 <td th:text="${request.approve}"></td>
                 <td>
-                    <form th:action="@{/request/approve}" method="post">
+                    <form th:action="@{/mentoring/request/approve}" method="post">
                         <input type="hidden" name="id" th:value="${request.id}">
                         <button type="submit">Подтвердить</button>
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{/request/delete}" method="post">
+                    <form th:action="@{mentoring/request/delete}" method="post">
                         <input type="hidden" name="id" th:value="${request.id}">
                         <button type="submit">Удалить</button>
                     </form>
