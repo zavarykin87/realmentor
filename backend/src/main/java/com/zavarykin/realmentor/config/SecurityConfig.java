@@ -31,12 +31,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/login", "/faq", "/contacts", "/mentors",
+                        .requestMatchers("/*", "/login", "/faq", "/contacts", "/mentors",
                                 "/user/registration", "/user/registrationConfirm").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .successForwardUrl("/user"));
+                        .anyRequest().authenticated());
 
         return http.build();
     }
