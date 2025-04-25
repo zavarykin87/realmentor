@@ -1,7 +1,7 @@
 module.exports = {
-  outputDir: '../backend/src/main/resources/static',          // Сборка в frontend/dist/
-  publicPath: '/',           // Базовый URL
+  outputDir: 'dist',
+  publicPath: '/',
   devServer: {
-    proxy: 'http://localhost:8080'  // Прокси для API в dev-режиме
+    proxy: 'http://localhost:8080'
   }
 }
