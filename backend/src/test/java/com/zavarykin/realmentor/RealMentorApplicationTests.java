@@ -11,9 +11,6 @@ import java.sql.SQLException;
 @SpringBootTest
 class RealMentorApplicationTests {
 
-	@Autowired
-	private JdbcUserDetailsManager jdbcUserDetailsManager;
-
     @Test
 	void contextLoads() {
 

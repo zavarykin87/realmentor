@@ -4,16 +4,18 @@ spring:
   messages:
     basename: i18n/messages
   datasource:
-    url: jdbc:postgresql://localhost:5432/realmentor
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-  liquibase:
-    enabled: true
+    url: jdbc:h2:mem:realmentor
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enable: true
+      path: /h2-console
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: validate # none / validate / create
+      ddl-auto: update # none / validate / create / update
     properties:
       hibernate:
         format_sql: true
@@ -36,3 +38,10 @@ zoom:
     client-secret: coDaz8AGAj2V5ibefbjFKV6PVjxI8rxO
     account-id: E5tNFtUxQpijXL_dPfeuxA
     api-url: https://api.zoom.us
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

@@ -22,17 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final JdbcUserDetailsManager jdbcUserDetailsManager;
-    private final PasswordEncoder passwordEncoder;
+    //private final JdbcUserDetailsManager jdbcUserDetailsManager;
+    //private final PasswordEncoder passwordEncoder;
     private final EmailRepository emailRepository;
 
     public UserServiceImpl(UserRepository userRepository,
-                           JdbcUserDetailsManager jdbcUserDetailsManager,
-                           PasswordEncoder passwordEncoder,
+                           //JdbcUserDetailsManager jdbcUserDetailsManager,
+                           //PasswordEncoder passwordEncoder,
                            EmailRepository emailRepository) {
         this.userRepository = userRepository;
-        this.jdbcUserDetailsManager = jdbcUserDetailsManager;
-        this.passwordEncoder = passwordEncoder;
+        //this.jdbcUserDetailsManager = jdbcUserDetailsManager;
+        //this.passwordEncoder = passwordEncoder;
         this.emailRepository = emailRepository;
     }
 
@@ -53,19 +53,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(UserDto userDto) throws UserAlreadyExistException, EmailAlreadyExistException {
-        checkEmail(userDto.getEmail());
-        if (!jdbcUserDetailsManager.userExists(userDto.getUsername())) {
-            UserDetails user = User.builder()
-                    .username(userDto.getUsername())
-                    .password(passwordEncoder.encode(userDto.getPassword()))
-                    .roles(Role.USER.name())
-                    .disabled(true)
-                    .build();
-            jdbcUserDetailsManager.createUser(user);
-        } else {
-            throw new UserAlreadyExistException();
-        }
-        saveEmail(userDto);
+//        checkEmail(userDto.getEmail());
+//        if (!jdbcUserDetailsManager.userExists(userDto.getUsername())) {
+//            UserDetails user = User.builder()
+//                    .username(userDto.getUsername())
+//                    .password(passwordEncoder.encode(userDto.getPassword()))
+//                    .roles(Role.USER.name())
+//                    .disabled(true)
+//                    .build();
+//            jdbcUserDetailsManager.createUser(user);
+//        } else {
+//            throw new UserAlreadyExistException();
+//        }
+//        saveEmail(userDto);
     }
 
     @Override
