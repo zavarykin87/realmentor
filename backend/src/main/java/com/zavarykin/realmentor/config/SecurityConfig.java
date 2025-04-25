@@ -40,21 +40,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/**", "/home", "/register", "/h2-console/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/", "index.html", "/h2-console/**").permitAll()
+                        .anyRequest().authenticated())
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**") // Отключить CSRF для H2
                 )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .permitAll()
-                );
-        // Для доступа к H2 Console
-        http.csrf(csrf -> csrf.disable());
-        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .formLogin(withDefaults());
         return http.build();
     }
 
@@ -70,9 +64,15 @@ public class SecurityConfig {
                 .password(encoder.encode("admin"))
                 .roles("USER", "ADMIN")
                 .build();
+        UserDetails mentor = User.builder()
+                .username("mentor")
+                .password(encoder.encode("mentor"))
+                .roles("USER", "MENTOR")
+                .build();
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
         users.createUser(user);
         users.createUser(admin);
+        users.createUser(mentor);
         return users;
     }
 
