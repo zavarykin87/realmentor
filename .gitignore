@@ -33,7 +33,9 @@ build/
 .vscode/
 /backend/src/main/resources/static/
 .DS_Store
-node_modules
+dist
+node
+package-lock.json
 
 # local env files
 .env.local
