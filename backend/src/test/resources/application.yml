@@ -1,0 +1,22 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: zavarykin87
+    password: pisstybaesxozkza
+    test-connection: true
+    from: zavarykin87@gmail.com
+    properties:
+      "[mail.smtp.auth]": true
+      "[mail.smtp.starttls.enable]": true
+      "[mail.debug]": false
+jwt:
+  secret: kZpzaCGBUXltoydE+SdUpxLnGLu9RGiQW3ef1m+lh5w= # храним тут только на стадии разработки (openssl rand -base64 32)
+  expiration: 86400 #24 часа в секундах
+zoom:
+  oauth2:
+    issuer: https://zoom.us/oauth
+    client-id: K8zZCkThTL60qs0zz5jL2g
+    client-secret: coDaz8AGAj2V5ibefbjFKV6PVjxI8rxO
+    account-id: E5tNFtUxQpijXL_dPfeuxA
+    api-url: https://api.zoom.us
