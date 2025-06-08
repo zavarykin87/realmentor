@@ -4,38 +4,30 @@ import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
 import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.service.EmailService;
-import com.zavarykin.realmentor.service.VerificationTokenService;
+import com.zavarykin.realmentor.service.RegistrationTokenService;
+import lombok.AllArgsConstructor;
+import lombok.val;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationEvent> {
 
     private final EmailService emailService;
-    private final VerificationTokenService verificationTokenService;
+    private final RegistrationTokenService registrationTokenService;
     private final UserRepository userRepository;
 
     private static final String subject = "Подтверждение регистрации";
 
-    public RegistrationListener(EmailService emailService,
-                                VerificationTokenService verificationTokenService,
-                                UserRepository userRepository) {
-        this.emailService = emailService;
-        this.verificationTokenService = verificationTokenService;
-        this.userRepository = userRepository;
-    }
-
     @Override
     public void onApplicationEvent(OnRegistrationEvent event) {
-        String username = event.getUsername();
-        String email = event.getEmail();
-        String url = event.getAppUrl();
-        UserEntity user = userRepository.findByUsername(username).orElseThrow();
-
-        String token = verificationTokenService.createTokenForUser(user).getToken();
-
-        String message = url + "/user/registrationConfirm?token=" + token;
-
+        val username = event.getUsername();
+        val email = event.getEmail();
+        val url = event.getAppUrl();
+        val user = userRepository.findByUsername(username).orElseThrow(); //TODO throw exception
+        val token = registrationTokenService.createToken(user.getUsername()).getToken();
+        val message = url + "/confirmRegister?token=" + token;
         emailService.sendSimpleMessage(email, subject, message);
     }
 

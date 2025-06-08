@@ -1,12 +1,17 @@
-## сборка проекта
+## Сборка проекта
 В корне проекта **/realmentor** выполнить команду: *mvn clean package*
 
-## старт приложения
+## Запуск приложения
 Перейти в директорию **/realmentor/backend/target** выполнить команду: *java -jar backend-1.0.0.jar*
 
 <http://localhost:8080>
 
+## Swagger UI :
+<http://localhost:8080/swagger-ui/index.html>
 
-## вход в консоль Н2
+## OpenAPI JSON:
+<http://localhost:8080/api-docs>
+
+## Н2:
 <http://localhost:8080/h2-console>
 

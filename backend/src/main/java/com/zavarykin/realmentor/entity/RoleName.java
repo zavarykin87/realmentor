@@ -1,7 +1,8 @@
 package com.zavarykin.realmentor.entity;
 
-public enum Role {
+public enum RoleName {
     USER,
     ADMIN,
-    MENTOR
+    MENTOR,
+    MENTEE
 }

@@ -44,7 +44,7 @@ public class RequestOnMentorServiceImpl implements RequestOnMentorService {
         UserEntity userEntity = userRepository.findByUsername(mentorEntity.getUsername()).orElseThrow();
         requestOnMentor.setApprove(true);
         mentorEntity.setConfirm(true);
-        userEntity.addAuthority(new AuthorityEntity("ROLE_MENTOR", userEntity));
+        //userEntity.addAuthority(new AuthorityEntity("ROLE_MENTOR", userEntity));
         requestOnMentorRepository.save(requestOnMentor);
         mentorRepository.save(mentorEntity);
         userRepository.save(userEntity);

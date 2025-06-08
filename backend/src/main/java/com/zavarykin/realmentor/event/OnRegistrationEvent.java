@@ -1,12 +1,14 @@
 package com.zavarykin.realmentor.event;
 
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
+@Getter
 public class OnRegistrationEvent extends ApplicationEvent {
 
-    private String appUrl;
-    private String username;
-    private String email;
+    private final String appUrl;
+    private final String username;
+    private final String email;
 
     public OnRegistrationEvent(String appUrl, String username, String email) {
         super(email);
@@ -15,27 +17,4 @@ public class OnRegistrationEvent extends ApplicationEvent {
         this.username = username;
     }
 
-    public String getAppUrl() {
-        return appUrl;
-    }
-
-    public void setAppUrl(String appUrl) {
-        this.appUrl = appUrl;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

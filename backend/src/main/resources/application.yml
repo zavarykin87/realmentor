@@ -15,11 +15,11 @@ spring:
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: create # none / validate / create / update
+      ddl-auto: create-drop # none / validate / create / update
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
+    show-sql: false
   mail:
     host: smtp.gmail.com
     port: 587
@@ -39,6 +39,18 @@ zoom:
     account-id: E5tNFtUxQpijXL_dPfeuxA
     api-url: https://api.zoom.us
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tagsSorter: alpha
+    operationsSorter: alpha
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+
+jwt:
+  secret: kZpzaCGBUXltoydE+SdUpxLnGLu9RGiQW3ef1m+lh5w= # храним тут только на стадии разработки (openssl rand -base64 32)
+  expiration: 86400 #24 часа в секундах
 
 logging:
   level:
