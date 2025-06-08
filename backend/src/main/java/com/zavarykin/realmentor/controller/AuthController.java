@@ -51,4 +51,6 @@ public class AuthController {
         headers.add("Location", "/");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
+
+    //TODO восстановить пароль
 }

@@ -43,6 +43,9 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<RoleEntity> roleEntities = new HashSet<>();
 
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    private RegistrationTokenEntity registrationToken;
+
     public UserEntity(String username, String password, String email) {
         this.username = username;
         this.password = password;

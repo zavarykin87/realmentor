@@ -1,13 +1,10 @@
 package com.zavarykin.realmentor.service.auth;
 
 import com.zavarykin.realmentor.entity.UserEntity;
-import com.zavarykin.realmentor.event.OnRegistrationEvent;
 import com.zavarykin.realmentor.exception.EmailAlreadyExistsException;
 import com.zavarykin.realmentor.exception.UsernameAlreadyExistsException;
 import com.zavarykin.realmentor.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
