@@ -25,4 +25,11 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(exception.getMessage(), LocalDateTime.now()));
     }
 
+    @ExceptionHandler(ArgumentInvalidException.class)
+    public ResponseEntity<ErrorResponse> handleArgumentInvalidException(ArgumentInvalidException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(exception.getMessage(), LocalDateTime.now()));
+    }
+
 }

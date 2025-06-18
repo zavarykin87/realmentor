@@ -1,9 +1,11 @@
 package com.zavarykin.realmentor.service.auth;
 
 import com.zavarykin.realmentor.entity.UserEntity;
+import com.zavarykin.realmentor.exception.ArgumentInvalidException;
 import com.zavarykin.realmentor.exception.EmailAlreadyExistsException;
 import com.zavarykin.realmentor.exception.UsernameAlreadyExistsException;
 import com.zavarykin.realmentor.repository.UserRepository;
+import com.zavarykin.realmentor.util.ArgumentChecker;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,9 @@ public class AuthService {
     }
 
     public void signUp(final String username, final String password, final String email) {
+        if (!ArgumentChecker.checkUserLogin(username)) {
+            throw new ArgumentInvalidException("login");
+        }
         if (userRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException(username);
         }

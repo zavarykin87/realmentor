@@ -161,8 +161,22 @@ class AuthControllerTest {
     }
 
     @Test
-    void registerUser_shouldReturnServerErrorWhenLoginInvalid() {
-        //TODO
+    void registerUser_shouldReturnServerErrorWhenLoginInvalid() throws Exception {
+        String requestBody = """
+        {
+            "username": "!@#$%^&&",
+            "password": "user",
+            "email": "user@example.com"
+        }
+        """;
+
+        mockMvc.perform(post("/register")
+                        .header("Origin", "http://localhost")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.message").value("Недопустимое значение в параметре login"));
     }
 
     @Test
@@ -172,5 +186,6 @@ class AuthControllerTest {
 
     @Test
     void confirmRegister() {
+        //TODO
     }
 }

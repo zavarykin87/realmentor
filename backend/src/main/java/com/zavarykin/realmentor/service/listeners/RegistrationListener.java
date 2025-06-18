@@ -8,6 +8,7 @@ import com.zavarykin.realmentor.service.RegistrationTokenService;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
@@ -19,13 +20,14 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationE
     private final UserRepository userRepository;
 
     private static final String subject = "Подтверждение регистрации";
+    private static final String ERROR_MSG = "Пользователь с таким логином %s не существует";
 
     @Override
     public void onApplicationEvent(OnRegistrationEvent event) {
         val username = event.getUsername();
         val email = event.getEmail();
         val url = event.getAppUrl();
-        val user = userRepository.findByUsername(username).orElseThrow(); //TODO throw exception
+        val user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format(ERROR_MSG, username)));
         val token = registrationTokenService.createToken(user.getUsername()).getToken();
         val message = url + "/confirmRegister?token=" + token;
         emailService.sendSimpleMessage(email, subject, message);
