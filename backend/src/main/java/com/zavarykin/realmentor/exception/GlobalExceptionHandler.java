@@ -39,4 +39,11 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(exception.getMessage(), LocalDateTime.now()));
     }
 
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ErrorResponse> handleTokenExpiredException(TokenExpiredException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(exception.getMessage(), LocalDateTime.now()));
+    }
+
 }

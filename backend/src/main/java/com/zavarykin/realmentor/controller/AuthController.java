@@ -4,7 +4,7 @@ import com.zavarykin.realmentor.dto.AuthRequest;
 import com.zavarykin.realmentor.dto.AuthResponse;
 import com.zavarykin.realmentor.dto.RegisterRequest;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
-import com.zavarykin.realmentor.service.RegistrationTokenService;
+import com.zavarykin.realmentor.service.UserTokenService;
 import com.zavarykin.realmentor.service.UserService;
 import com.zavarykin.realmentor.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final ApplicationEventPublisher eventPublisher;
-    private final RegistrationTokenService tokenService;
+    private final UserTokenService tokenService;
     private final UserService userService;
 
     @PostMapping("/login")
@@ -52,7 +52,7 @@ public class AuthController {
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-    @PostMapping("/restore")
+    @PostMapping("/restorePassword")
     public ResponseEntity<?> restorePassword(@RequestParam String email) {
         //TODO восстановить пароль
         return ResponseEntity.ok().build();

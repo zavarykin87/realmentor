@@ -1,10 +1,9 @@
 package com.zavarykin.realmentor.service.listeners;
 
-import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
 import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.service.EmailService;
-import com.zavarykin.realmentor.service.RegistrationTokenService;
+import com.zavarykin.realmentor.service.UserTokenService;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.springframework.context.ApplicationListener;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class RegistrationListener implements ApplicationListener<OnRegistrationEvent> {
 
     private final EmailService emailService;
-    private final RegistrationTokenService registrationTokenService;
+    private final UserTokenService userTokenService;
     private final UserRepository userRepository;
 
     private static final String subject = "Подтверждение регистрации";
@@ -28,7 +27,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationE
         val email = event.getEmail();
         val url = event.getAppUrl();
         val user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format(ERROR_MSG, username)));
-        val token = registrationTokenService.createToken(user.getUsername()).getToken();
+        val token = userTokenService.createToken(user.getUsername()).getToken();
         val message = url + "/confirmRegister?token=" + token;
         emailService.sendSimpleMessage(email, subject, message);
     }

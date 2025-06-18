@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Fetch;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,7 +42,7 @@ public class UserEntity implements UserDetails {
     private Set<RoleEntity> roleEntities = new HashSet<>();
 
     @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
-    private RegistrationTokenEntity registrationToken;
+    private UserTokenEntity registrationToken;
 
     public UserEntity(String username, String password, String email) {
         this.username = username;

@@ -1,10 +1,9 @@
 package com.zavarykin.realmentor.controller;
 
-import com.zavarykin.realmentor.entity.RegistrationTokenEntity;
 import com.zavarykin.realmentor.entity.UserEntity;
-import com.zavarykin.realmentor.repository.RegistrationTokenRepository;
 import com.zavarykin.realmentor.repository.UserRepository;
-import com.zavarykin.realmentor.service.RegistrationTokenService;
+import com.zavarykin.realmentor.repository.UserTokenRepository;
+import com.zavarykin.realmentor.service.UserTokenService;
 import com.zavarykin.realmentor.service.impl.EmailServiceImpl;
 import lombok.val;
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,7 +38,9 @@ class AuthControllerTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RegistrationTokenService registrationTokenService;
+    private UserTokenService userTokenService;
+    @Autowired
+    private UserTokenRepository tokenRepository;
 
     @MockitoBean
     private EmailServiceImpl emailService;
@@ -229,7 +232,7 @@ class AuthControllerTest {
     @Test
     void confirmRegister_shouldConfirmRegisterAndRedirectToIndexPage() throws Exception {
         var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), "email@example.com"));
-        val tokenEntity = registrationTokenService.createToken(user.getUsername());
+        val tokenEntity = userTokenService.createToken(user.getUsername());
 
         assertFalse(user.isEnabled());
 
@@ -254,6 +257,25 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is5xxServerError())
                 .andExpect(jsonPath("$.message").value("Объект testtoken не найден"));
+    }
+
+    @Test
+    void confirmRegister_shouldReturnServerErrorWhenTokenExpired() throws Exception {
+        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), "email@example.com"));
+        val tokenEntity = userTokenService.createToken(user.getUsername());
+        tokenEntity.setExpiryDate(LocalDateTime.now().minusHours(24l));
+        tokenRepository.save(tokenEntity);
+        assertFalse(user.isEnabled());
+
+        mockMvc.perform(get("/confirmRegister")
+                        .header("Origin", "http://localhost")
+                        .param("token", tokenEntity.getToken())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$.message").value("Срок действия токена истек"));
+
+        user = userRepository.findByUsername(user.getUsername()).get();
+        assertFalse(user.isEnabled());
     }
 
 }
