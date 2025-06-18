@@ -7,6 +7,7 @@ import com.zavarykin.realmentor.exception.UsernameAlreadyExistsException;
 import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.util.ArgumentChecker;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,7 @@ public class AuthService {
 
     public String signIn(final String username, final String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        val userDetails = userDetailsService.loadUserByUsername(username);
         return jwtUtil.generateToken(userDetails);
     }
 
@@ -33,16 +34,20 @@ public class AuthService {
         if (!ArgumentChecker.checkUserLogin(username)) {
             throw new ArgumentInvalidException("login");
         }
+        if (!ArgumentChecker.checkUserPassword(password)) {
+            throw new ArgumentInvalidException("password");
+        }
+        if (!ArgumentChecker.checkUserEmail(email)) {
+            throw new ArgumentInvalidException("email");
+        }
         if (userRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException(username);
         }
         if (userRepository.existsByEmail(email)) {
             throw new EmailAlreadyExistsException(email);
         }
-        //TODO checkPasswordValid
-        //TODO checkEmailValid
 
-        UserEntity user = new UserEntity(username, passwordEncoder.encode(password), email);
+        val user = new UserEntity(username, passwordEncoder.encode(password), email);
         userRepository.save(user);
     }
 

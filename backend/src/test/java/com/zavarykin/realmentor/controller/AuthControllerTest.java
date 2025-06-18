@@ -102,7 +102,7 @@ class AuthControllerTest {
         String requestBody = """
         {
             "username": "user",
-            "password": "user",
+            "password": "Password!123",
             "email": "user@example.com"
         }
         """;
@@ -121,7 +121,7 @@ class AuthControllerTest {
         String requestBody = """
         {
             "username": "user",
-            "password": "user",
+            "password": "Password!123",
             "email": "user@example.com"
         }
         """;
@@ -143,7 +143,7 @@ class AuthControllerTest {
         String requestBody = """
         {
             "username": "user",
-            "password": "user",
+            "password": "Password!123",
             "email": "user@example.com"
         }
         """;
@@ -165,7 +165,7 @@ class AuthControllerTest {
         String requestBody = """
         {
             "username": "!@#$%^&&",
-            "password": "user",
+            "password": "Password!123",
             "email": "user@example.com"
         }
         """;
@@ -180,8 +180,41 @@ class AuthControllerTest {
     }
 
     @Test
-    void registerUser_shouldReturnServerErrorWhenEmailInvalid() {
-        //TODO
+    void registerUser_shouldReturnServerErrorWhenPasswordInvalid() throws Exception {
+        String requestBody = """
+        {
+            "username": "user",
+            "password": "123",
+            "email": "user@example.com"
+        }
+        """;
+
+        mockMvc.perform(post("/register")
+                        .header("Origin", "http://localhost")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.message").value("Недопустимое значение в параметре password"));
+    }
+
+    @Test
+    void registerUser_shouldReturnServerErrorWhenEmailInvalid() throws Exception {
+        String requestBody = """
+        {
+            "username": "user",
+            "password": "Password!123",
+            "email": "user@example"
+        }
+        """;
+
+        mockMvc.perform(post("/register")
+                        .header("Origin", "http://localhost")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.message").value("Недопустимое значение в параметре email"));
     }
 
     @Test
