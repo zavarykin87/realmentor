@@ -32,4 +32,11 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(exception.getMessage(), LocalDateTime.now()));
     }
 
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleObjectNotFoundException(ObjectNotFoundException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(exception.getMessage(), LocalDateTime.now()));
+    }
+
 }

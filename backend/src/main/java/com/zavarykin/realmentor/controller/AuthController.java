@@ -47,10 +47,14 @@ public class AuthController {
         userService.saveUser(user);
         tokenService.deleteToken(tokenEntity);
 
-        HttpHeaders headers = new HttpHeaders();
+        val headers = new HttpHeaders();
         headers.add("Location", "/");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-    //TODO восстановить пароль
+    @PostMapping("/restore")
+    public ResponseEntity<?> restorePassword(@RequestParam String email) {
+        //TODO восстановить пароль
+        return ResponseEntity.ok().build();
+    }
 }

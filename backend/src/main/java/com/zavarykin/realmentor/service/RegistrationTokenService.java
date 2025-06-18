@@ -6,7 +6,6 @@ import com.zavarykin.realmentor.entity.RegistrationTokenEntity;
 public interface RegistrationTokenService {
 
     RegistrationTokenEntity createToken(String username);
-    RegistrationTokenEntity getByUsername(String username);
     RegistrationTokenEntity getByToken(String token);
     void deleteToken(RegistrationTokenEntity entity);
 }

@@ -1,8 +1,12 @@
 package com.zavarykin.realmentor.controller;
 
+import com.zavarykin.realmentor.entity.RegistrationTokenEntity;
 import com.zavarykin.realmentor.entity.UserEntity;
+import com.zavarykin.realmentor.repository.RegistrationTokenRepository;
 import com.zavarykin.realmentor.repository.UserRepository;
+import com.zavarykin.realmentor.service.RegistrationTokenService;
 import com.zavarykin.realmentor.service.impl.EmailServiceImpl;
+import lombok.val;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,6 +36,8 @@ class AuthControllerTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RegistrationTokenService registrationTokenService;
 
     @MockitoBean
     private EmailServiceImpl emailService;
@@ -218,7 +227,33 @@ class AuthControllerTest {
     }
 
     @Test
-    void confirmRegister() {
-        //TODO
+    void confirmRegister_shouldConfirmRegisterAndRedirectToIndexPage() throws Exception {
+        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), "email@example.com"));
+        val tokenEntity = registrationTokenService.createToken(user.getUsername());
+
+        assertFalse(user.isEnabled());
+
+        mockMvc.perform(get("/confirmRegister")
+                .header("Origin", "http://localhost")
+                .param("token", tokenEntity.getToken())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "/"));
+
+        user = userRepository.findByUsername(user.getUsername()).get();
+
+        assertTrue(user.isEnabled());
     }
+
+    @Test
+    void confirmRegister_shouldReturnServerErrorWhenTokenNotFound() throws Exception {
+        var token = "testtoken";
+        mockMvc.perform(get("/confirmRegister")
+                        .header("Origin", "http://localhost")
+                        .param("token", token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$.message").value("Объект testtoken не найден"));
+    }
+
 }

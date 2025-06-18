@@ -1,7 +1,8 @@
-package com.zavarykin.realmentor.service.impl;
+package com.zavarykin.realmentor.service;
 
 import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.entity.RegistrationTokenEntity;
+import com.zavarykin.realmentor.exception.ObjectNotFoundException;
 import com.zavarykin.realmentor.repository.RegistrationTokenRepository;
 import com.zavarykin.realmentor.service.RegistrationTokenService;
 import com.zavarykin.realmentor.service.UserService;
@@ -26,14 +27,8 @@ public class RegistrationTokenServiceImpl implements RegistrationTokenService {
     }
 
     @Override
-    public RegistrationTokenEntity getByUsername(String username) {
-        val user = userService.getByUsername(username);
-        return registrationTokenRepository.findByUserEntity(user).orElseThrow(); //TODO throw exception
-    }
-
-    @Override
     public RegistrationTokenEntity getByToken(String token) {
-        return registrationTokenRepository.findByToken(token).orElseThrow(); // TODO throw exception
+        return registrationTokenRepository.findByToken(token).orElseThrow(() -> new ObjectNotFoundException(token));
     }
 
     @Override
