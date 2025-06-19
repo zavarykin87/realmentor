@@ -3,10 +3,10 @@ package com.zavarykin.realmentor.controller;
 import com.zavarykin.realmentor.dto.AuthRequest;
 import com.zavarykin.realmentor.dto.AuthResponse;
 import com.zavarykin.realmentor.dto.RegisterRequest;
+import com.zavarykin.realmentor.event.OnConfirmRegistrationEvent;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
+import com.zavarykin.realmentor.event.OnRestoreLoginEvent;
 import com.zavarykin.realmentor.event.OnRestorePasswordEvent;
-import com.zavarykin.realmentor.service.UserTokenService;
-import com.zavarykin.realmentor.service.UserService;
 import com.zavarykin.realmentor.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -23,8 +23,6 @@ public class AuthController {
 
     private final AuthService authService;
     private final ApplicationEventPublisher eventPublisher;
-    private final UserTokenService tokenService;
-    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthRequest authRequest) {
@@ -42,12 +40,7 @@ public class AuthController {
 
     @GetMapping("/confirmRegister")
     public ResponseEntity<?> confirmRegister(@RequestParam String token) {
-        val tokenEntity = tokenService.getByToken(token);
-        val user = tokenEntity.getUserEntity();
-        user.setEnabled(true);
-        userService.saveUser(user);
-        tokenService.deleteToken(tokenEntity);
-
+        eventPublisher.publishEvent(new OnConfirmRegistrationEvent(token));
         val headers = new HttpHeaders();
         headers.add("Location", "/");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
@@ -60,7 +53,11 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    //TODO restore-login
+    @PostMapping("/restoreLogin")
+    public ResponseEntity<?> restoreLogin(HttpServletRequest request, @RequestParam String email) {
+        eventPublisher.publishEvent(new OnRestoreLoginEvent(email));
+        return ResponseEntity.ok().build();
+    }
 
     //TODO reset-password
 

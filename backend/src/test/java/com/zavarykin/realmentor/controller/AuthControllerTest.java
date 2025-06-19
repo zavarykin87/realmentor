@@ -235,6 +235,7 @@ class AuthControllerTest {
         val tokenEntity = userTokenService.createToken(user.getUsername());
 
         assertFalse(user.isEnabled());
+        assertTrue(tokenRepository.findByUserEntity(user).isPresent());
 
         mockMvc.perform(get("/confirmRegister")
                 .header("Origin", "http://localhost")
@@ -246,6 +247,7 @@ class AuthControllerTest {
         user = userRepository.findByUsername(user.getUsername()).get();
 
         assertTrue(user.isEnabled());
+        assertFalse(tokenRepository.findByUserEntity(user).isPresent());
     }
 
     @Test
@@ -305,6 +307,33 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is5xxServerError())
                 .andExpect(jsonPath("$.message").value("Объект user@example.com не найден"));
+    }
+
+    @Test
+    void restoreLogin_shouldSendMessage() throws Exception {
+        var email = "user@example.com";
+        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), email));
+
+        mockMvc.perform(post("/restoreLogin")
+                        .header("Origin", "http://localhost")
+                        .param("email", email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(emailService).sendSimpleMessage(eq(email), eq("Напоминание логина"), anyString());
+    }
+
+    @Test
+    void restoreLogin_shouldReturnServerErrorWhenEmailNotFound() throws Exception {
+        var email = "user@example.com";
+
+        mockMvc.perform(post("/restoreLogin")
+                        .header("Origin", "http://localhost")
+                        .param("email", email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$.message").value("Объект user@example.com не найден"));
+
     }
 
 }

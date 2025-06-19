@@ -1,6 +1,7 @@
 package com.zavarykin.realmentor.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class UserEntity implements UserDetails {
     private String username;
 
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -38,11 +40,11 @@ public class UserEntity implements UserDetails {
     @ColumnDefault("false")
     private boolean enabled;
 
-    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<RoleEntity> roleEntities = new HashSet<>();
 
-    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
-    private UserTokenEntity registrationToken;
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private UserTokenEntity userTokenEntity;
 
     public UserEntity(String username, String password, String email) {
         this.username = username;
