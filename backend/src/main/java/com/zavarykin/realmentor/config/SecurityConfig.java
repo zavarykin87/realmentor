@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "index.html", "/h2-console/**", "/login", "/error", "/register",
-                                "confirmRegister/**", "/api-docs/**", "swagger-ui/**").permitAll()
+                                "confirmRegister/**", "/api-docs/**", "swagger-ui/**", "/restorePassword").permitAll()
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

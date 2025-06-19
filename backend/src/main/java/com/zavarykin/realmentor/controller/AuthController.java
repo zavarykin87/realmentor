@@ -4,6 +4,7 @@ import com.zavarykin.realmentor.dto.AuthRequest;
 import com.zavarykin.realmentor.dto.AuthResponse;
 import com.zavarykin.realmentor.dto.RegisterRequest;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
+import com.zavarykin.realmentor.event.OnRestorePasswordEvent;
 import com.zavarykin.realmentor.service.UserTokenService;
 import com.zavarykin.realmentor.service.UserService;
 import com.zavarykin.realmentor.service.auth.AuthService;
@@ -53,8 +54,14 @@ public class AuthController {
     }
 
     @PostMapping("/restorePassword")
-    public ResponseEntity<?> restorePassword(@RequestParam String email) {
-        //TODO восстановить пароль
+    public ResponseEntity<?> restorePassword(HttpServletRequest request, @RequestParam String email) {
+        val appUrl = request.getHeader("Origin");
+        eventPublisher.publishEvent(new OnRestorePasswordEvent(email, appUrl));
         return ResponseEntity.ok().build();
     }
+
+    //TODO restore-login
+
+    //TODO reset-password
+
 }

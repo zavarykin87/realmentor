@@ -18,7 +18,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationE
     private final UserTokenService userTokenService;
     private final UserRepository userRepository;
 
-    private static final String subject = "Подтверждение регистрации";
+    private static final String SUBJECT = "Подтверждение регистрации";
     private static final String ERROR_MSG = "Пользователь с таким логином %s не существует";
 
     @Override
@@ -29,7 +29,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationE
         val user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format(ERROR_MSG, username)));
         val token = userTokenService.createToken(user.getUsername()).getToken();
         val message = url + "/confirmRegister?token=" + token;
-        emailService.sendSimpleMessage(email, subject, message);
+        emailService.sendSimpleMessage(email, SUBJECT, message);
     }
 
 }

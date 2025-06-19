@@ -278,4 +278,33 @@ class AuthControllerTest {
         assertFalse(user.isEnabled());
     }
 
+    @Test
+    void restorePassword_shouldCreateUserTokenAndSendMessage() throws Exception {
+        var email = "user@example.com";
+        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), email));
+        assertFalse(tokenRepository.findByUserEntity(user).isPresent());
+
+
+        mockMvc.perform(post("/restorePassword")
+                .header("Origin", "http://localhost")
+                .param("email", email)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        assertTrue(tokenRepository.findByUserEntity(user).isPresent());
+        verify(emailService).sendSimpleMessage(eq(email), eq("Восстановление пароля"), anyString());
+    }
+
+    @Test
+    void restorePassword_shouldReturnServerErrorWhenEmailNotFound() throws Exception {
+        var email = "user@example.com";
+
+        mockMvc.perform(post("/restorePassword")
+                        .header("Origin", "http://localhost")
+                        .param("email", email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$.message").value("Объект user@example.com не найден"));
+    }
+
 }
