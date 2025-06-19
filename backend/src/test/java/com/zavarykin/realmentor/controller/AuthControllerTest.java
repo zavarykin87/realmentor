@@ -4,7 +4,7 @@ import com.zavarykin.realmentor.entity.UserEntity;
 import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.repository.UserTokenRepository;
 import com.zavarykin.realmentor.service.UserTokenService;
-import com.zavarykin.realmentor.service.impl.EmailServiceImpl;
+import com.zavarykin.realmentor.service.EmailServiceImpl;
 import lombok.val;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

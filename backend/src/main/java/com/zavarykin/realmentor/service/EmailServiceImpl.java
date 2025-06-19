@@ -1,4 +1,4 @@
-package com.zavarykin.realmentor.service.impl;
+package com.zavarykin.realmentor.service;
 
 import com.zavarykin.realmentor.service.EmailService;
 import org.springframework.beans.factory.annotation.Value;
