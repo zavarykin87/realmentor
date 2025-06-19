@@ -1,5 +1,7 @@
 package com.zavarykin.realmentor.service.listeners;
 
+import com.zavarykin.realmentor.entity.RoleEntity;
+import com.zavarykin.realmentor.entity.RoleName;
 import com.zavarykin.realmentor.event.OnConfirmRegistrationEvent;
 import com.zavarykin.realmentor.service.UserService;
 import com.zavarykin.realmentor.service.UserTokenService;
@@ -22,6 +24,7 @@ public class ConfirmRegistrationListener implements ApplicationListener<OnConfir
         val user = userService.getByUsername(username);
         user.setEnabled(true);
         user.setUserTokenEntity(null);
+        user.addRole(new RoleEntity(RoleName.USER));
         userService.saveUser(user);
     }
 }

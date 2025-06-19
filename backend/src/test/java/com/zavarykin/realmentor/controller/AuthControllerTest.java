@@ -5,6 +5,7 @@ import com.zavarykin.realmentor.repository.UserRepository;
 import com.zavarykin.realmentor.repository.UserTokenRepository;
 import com.zavarykin.realmentor.service.UserTokenService;
 import com.zavarykin.realmentor.service.EmailServiceImpl;
+import com.zavarykin.realmentor.service.auth.CustomUserDetailsService;
 import lombok.val;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,6 +43,8 @@ class AuthControllerTest {
     private UserTokenService userTokenService;
     @Autowired
     private UserTokenRepository tokenRepository;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @MockitoBean
     private EmailServiceImpl emailService;
@@ -248,6 +252,8 @@ class AuthControllerTest {
 
         assertTrue(user.isEnabled());
         assertFalse(tokenRepository.findByUserEntity(user).isPresent());
+        assertTrue(userDetailsService.loadUserByUsername(user.getUsername()).getAuthorities().size() == 1);
+        assertTrue(userDetailsService.loadUserByUsername(user.getUsername()).getAuthorities().contains(new SimpleGrantedAuthority("USER")));
     }
 
     @Test
