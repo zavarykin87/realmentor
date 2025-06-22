@@ -26,7 +26,7 @@ public class RestorePasswordListener implements ApplicationListener<OnRestorePas
         val url = event.getAppUrl();
         val user = userRepository.findByEmail(email).orElseThrow(() -> new ObjectNotFoundException(email));
         val token = tokenService.createToken(user.getUsername()).getToken();
-        val message = url + "/resetPassword?token=" + token;
+        val message = url + "/auth/resetPassword?token=" + token;
         emailService.sendSimpleMessage(email, SUBJECT, message);
     }
 }

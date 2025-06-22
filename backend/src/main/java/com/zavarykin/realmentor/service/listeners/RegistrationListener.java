@@ -28,7 +28,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationE
         val url = event.getAppUrl();
         val user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format(ERROR_MSG, username)));
         val token = userTokenService.createToken(user.getUsername()).getToken();
-        val message = url + "/confirmRegister?token=" + token;
+        val message = url + "/auth/confirmRegister?token=" + token;
         emailService.sendSimpleMessage(email, SUBJECT, message);
     }
 
