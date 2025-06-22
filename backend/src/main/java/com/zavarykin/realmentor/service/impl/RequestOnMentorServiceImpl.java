@@ -1,7 +1,6 @@
 package com.zavarykin.realmentor.service.impl;
 
 import com.zavarykin.realmentor.dto.RequestOnMentorDto;
-import com.zavarykin.realmentor.entity.AuthorityEntity;
 import com.zavarykin.realmentor.entity.MentorEntity;
 import com.zavarykin.realmentor.entity.RequestOnMentorEntity;
 import com.zavarykin.realmentor.entity.UserEntity;
