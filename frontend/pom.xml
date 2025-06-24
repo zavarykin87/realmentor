@@ -20,7 +20,7 @@
                 <version>3.4.0</version>
                 <executions>
                     <execution>
-                        <id>clean-dist</id>
+                        <id>clean-build</id>
                         <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
@@ -28,7 +28,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>dist</directory>
+                                    <directory>build</directory>
                                     <includes>
                                         <include>**</include>
                                     </includes>
@@ -64,7 +64,7 @@
                                 <fileset>
                                     <directory>node_modules</directory>
                                     <includes>
-                                        <include>*</include>
+                                        <include>**</include>
                                     </includes>
                                 </fileset>
                             </filesets>
