@@ -19,6 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -33,13 +36,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+//                .cors(cors -> cors.configurationSource(request -> {
+//                    CorsConfiguration config = new CorsConfiguration();
+//                    config.setAllowedOrigins(List.of("http://localhost:3000"));
+//                    config.setAllowedMethods(List.of("*"));
+//                    config.setAllowedHeaders(List.of("*"));
+//                    return config;
+//                }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "index.html", "/h2-console/**", "/error", "/api-docs/**",
+                        .requestMatchers("/", "/index.html", "/static/**", "/h2-console/**", "/error", "/api-docs/**",
                                 "swagger-ui/**", "/auth/**").permitAll()
                         .anyRequest().authenticated())
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())) // Защита для H2
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationManager(authenticationManager());
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
