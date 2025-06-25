@@ -56,13 +56,13 @@ class AuthControllerTest {
 
     @Test
     void authenticateUser_shouldReturnTokenAndStatusOk() throws Exception {
-        var userEntity = new UserEntity("user", passwordEncoder.encode("password"), "user@example.com");
+        var userEntity = new UserEntity("user@example.com", passwordEncoder.encode("password"));
         userEntity.setEnabled(true);
         userRepository.save(userEntity);
 
         String requestBody = """
         {
-            "username": "user",
+            "email": "user@example.com",
             "password": "password"
         }
         """;
@@ -77,12 +77,12 @@ class AuthControllerTest {
 
     @Test
     void authenticateUser_shouldReturnForbiddenWhenUserNotEnabled() throws Exception {
-        var userEntity = new UserEntity("user", passwordEncoder.encode("password"), "user@example.com");
+        var userEntity = new UserEntity("user@example.com", passwordEncoder.encode("password"));
         userRepository.save(userEntity);
 
         String requestBody = """
         {
-            "username": "user",
+            "email": "user@example.com",
             "password": "password"
         }
         """;
@@ -96,12 +96,12 @@ class AuthControllerTest {
 
     @Test
     void authenticateUser_shouldReturnForbiddenWhenPasswordInvalid() throws Exception {
-        var userEntity = new UserEntity("user", passwordEncoder.encode("password"), "user@example.com");
+        var userEntity = new UserEntity("user@example.com", passwordEncoder.encode("password"));
         userRepository.save(userEntity);
 
         String requestBody = """
         {
-            "username": "user",
+            "username": "user@example.com",
             "password": "!password"
         }
         """;
@@ -117,9 +117,8 @@ class AuthControllerTest {
     void registerUser_shouldRegisterUserSendMessageAndReturnOk() throws Exception {
         String requestBody = """
         {
-            "username": "user",
-            "password": "Password!123",
-            "email": "user@example.com"
+            "email": "user@example.com",
+            "password": "Password!123"
         }
         """;
 
@@ -133,39 +132,15 @@ class AuthControllerTest {
     }
 
     @Test
-    void registerUser_shouldReturnServerErrorWhenUsernameExists() throws Exception {
-        String requestBody = """
-        {
-            "username": "user",
-            "password": "Password!123",
-            "email": "user@example.com"
-        }
-        """;
-
-        userRepository.save(new UserEntity(
-                "user", passwordEncoder.encode("password"), "user@mail.ru"));
-
-        mockMvc.perform(post("/auth/register")
-                        .header("Origin", "http://localhost")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().is5xxServerError())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.message").value("Пользователь с таким логином: user уже существует"));
-    }
-
-    @Test
     void registerUser_shouldReturnServerErrorWhenEmailExists() throws Exception {
         String requestBody = """
         {
-            "username": "user",
-            "password": "Password!123",
-            "email": "user@example.com"
+            "email": "user@example.com",
+            "password": "Password!123"
         }
         """;
 
-        userRepository.save(new UserEntity(
-                "user2", passwordEncoder.encode("password"), "user@example.com"));
+        userRepository.save(new UserEntity("user@example.com", passwordEncoder.encode("password")));
 
         mockMvc.perform(post("/auth/register")
                         .header("Origin", "http://localhost")
@@ -177,31 +152,11 @@ class AuthControllerTest {
     }
 
     @Test
-    void registerUser_shouldReturnServerErrorWhenLoginInvalid() throws Exception {
-        String requestBody = """
-        {
-            "username": "!@#$%^&&",
-            "password": "Password!123",
-            "email": "user@example.com"
-        }
-        """;
-
-        mockMvc.perform(post("/auth/register")
-                        .header("Origin", "http://localhost")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().is5xxServerError())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.message").value("Недопустимое значение в параметре login"));
-    }
-
-    @Test
     void registerUser_shouldReturnServerErrorWhenPasswordInvalid() throws Exception {
         String requestBody = """
         {
-            "username": "user",
-            "password": "123",
-            "email": "user@example.com"
+            "email": "user@example.com",
+            "password": "123"
         }
         """;
 
@@ -218,9 +173,8 @@ class AuthControllerTest {
     void registerUser_shouldReturnServerErrorWhenEmailInvalid() throws Exception {
         String requestBody = """
         {
-            "username": "user",
-            "password": "Password!123",
-            "email": "user@example"
+            "email": "user@example",
+            "password": "Password!123"
         }
         """;
 
@@ -235,7 +189,7 @@ class AuthControllerTest {
 
     @Test
     void confirmRegister_shouldConfirmRegisterAndRedirectToIndexPage() throws Exception {
-        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), "email@example.com"));
+        var user = userRepository.save(new UserEntity("email@example.com", passwordEncoder.encode("password")));
         val tokenEntity = userTokenService.createToken(user.getUsername());
 
         assertFalse(user.isEnabled());
@@ -248,7 +202,7 @@ class AuthControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/"));
 
-        user = userRepository.findByUsername(user.getUsername()).get();
+        user = userRepository.findByEmail(user.getEmail()).get();
 
         assertTrue(user.isEnabled());
         assertFalse(tokenRepository.findByUserEntity(user).isPresent());
@@ -269,7 +223,7 @@ class AuthControllerTest {
 
     @Test
     void confirmRegister_shouldReturnServerErrorWhenTokenExpired() throws Exception {
-        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), "email@example.com"));
+        var user = userRepository.save(new UserEntity("email@example.com", passwordEncoder.encode("password")));
         val tokenEntity = userTokenService.createToken(user.getUsername());
         tokenEntity.setExpiryDate(LocalDateTime.now().minusHours(24l));
         tokenRepository.save(tokenEntity);
@@ -282,14 +236,14 @@ class AuthControllerTest {
                 .andExpect(status().is5xxServerError())
                 .andExpect(jsonPath("$.message").value("Срок действия токена истек"));
 
-        user = userRepository.findByUsername(user.getUsername()).get();
+        user = userRepository.findByEmail(user.getEmail()).get();
         assertFalse(user.isEnabled());
     }
 
     @Test
     void restorePassword_shouldCreateUserTokenAndSendMessage() throws Exception {
         var email = "user@example.com";
-        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), email));
+        var user = userRepository.save(new UserEntity(email, passwordEncoder.encode("password")));
         assertFalse(tokenRepository.findByUserEntity(user).isPresent());
 
 
@@ -314,32 +268,4 @@ class AuthControllerTest {
                 .andExpect(status().is5xxServerError())
                 .andExpect(jsonPath("$.message").value("Объект user@example.com не найден"));
     }
-
-    @Test
-    void restoreLogin_shouldSendMessage() throws Exception {
-        var email = "user@example.com";
-        var user = userRepository.save(new UserEntity("user", passwordEncoder.encode("password"), email));
-
-        mockMvc.perform(post("/auth/restoreLogin")
-                        .header("Origin", "http://localhost")
-                        .param("email", email)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        verify(emailService).sendSimpleMessage(eq(email), eq("Напоминание логина"), eq("Ваш логин: user"));
-    }
-
-    @Test
-    void restoreLogin_shouldReturnServerErrorWhenEmailNotFound() throws Exception {
-        var email = "user@example.com";
-
-        mockMvc.perform(post("/auth/restoreLogin")
-                        .header("Origin", "http://localhost")
-                        .param("email", email)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.message").value("Объект user@example.com не найден"));
-
-    }
-
 }

@@ -40,13 +40,13 @@ public class RequestOnMentorServiceImpl implements RequestOnMentorService {
     public void approve(Long id) {
         RequestOnMentorEntity requestOnMentor = requestOnMentorRepository.findById(id).orElseThrow();
         MentorEntity mentorEntity = mentorRepository.findByUsername(requestOnMentor.getUsername()).orElseThrow();
-        UserEntity userEntity = userRepository.findByUsername(mentorEntity.getUsername()).orElseThrow();
+        //UserEntity userEntity = userRepository.findByUsername(mentorEntity.getUsername()).orElseThrow();
         requestOnMentor.setApprove(true);
         mentorEntity.setConfirm(true);
         //userEntity.addAuthority(new AuthorityEntity("ROLE_MENTOR", userEntity));
         requestOnMentorRepository.save(requestOnMentor);
         mentorRepository.save(mentorEntity);
-        userRepository.save(userEntity);
+        //userRepository.save(userEntity);
     }
 
     private final Function<RequestOnMentorEntity, RequestOnMentorDto> mapEntityToDto = entity -> {

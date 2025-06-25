@@ -29,24 +29,17 @@ public class AuthService {
         return jwtUtil.generateToken(userDetails);
     }
 
-    public void signUp(final String username, final String password, final String email) {
-        if (!ArgumentChecker.checkUserLogin(username)) {
-            throw new ArgumentInvalidException("login");
+    public void signUp(final String email, final String password) {
+        if (!ArgumentChecker.checkUserEmail(email)) {
+            throw new ArgumentInvalidException("email");
         }
         if (!ArgumentChecker.checkUserPassword(password)) {
             throw new ArgumentInvalidException("password");
         }
-        if (!ArgumentChecker.checkUserEmail(email)) {
-            throw new ArgumentInvalidException("email");
-        }
-        if (userRepository.existsByUsername(username)) {
-            throw new UsernameAlreadyExistsException(username);
-        }
         if (userRepository.existsByEmail(email)) {
             throw new EmailAlreadyExistsException(email);
         }
-
-        val user = new UserEntity(username, passwordEncoder.encode(password), email);
+        val user = new UserEntity(email, passwordEncoder.encode(password));
         userRepository.save(user);
     }
 

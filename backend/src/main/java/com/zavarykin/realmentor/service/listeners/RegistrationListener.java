@@ -19,14 +19,13 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationE
     private final UserRepository userRepository;
 
     private static final String SUBJECT = "Подтверждение регистрации";
-    private static final String ERROR_MSG = "Пользователь с таким логином %s не существует";
+    private static final String ERROR_MSG = "Пользователь с таким email %s не существует";
 
     @Override
     public void onApplicationEvent(OnRegistrationEvent event) {
-        val username = event.getUsername();
         val email = event.getEmail();
         val url = event.getAppUrl();
-        val user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format(ERROR_MSG, username)));
+        val user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format(ERROR_MSG, email)));
         val token = userTokenService.createToken(user.getUsername()).getToken();
         val message = url + "/auth/confirmRegister?token=" + token;
         emailService.sendSimpleMessage(email, SUBJECT, message);

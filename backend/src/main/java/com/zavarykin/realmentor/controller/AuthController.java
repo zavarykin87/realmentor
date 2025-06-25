@@ -5,7 +5,6 @@ import com.zavarykin.realmentor.dto.AuthResponse;
 import com.zavarykin.realmentor.dto.RegisterRequest;
 import com.zavarykin.realmentor.event.OnConfirmRegistrationEvent;
 import com.zavarykin.realmentor.event.OnRegistrationEvent;
-import com.zavarykin.realmentor.event.OnRestoreLoginEvent;
 import com.zavarykin.realmentor.event.OnRestorePasswordEvent;
 import com.zavarykin.realmentor.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,15 +26,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthRequest authRequest) {
-        val token = authService.signIn(authRequest.username(), authRequest.password());
+        val token = authService.signIn(authRequest.email(), authRequest.password());
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(HttpServletRequest request, @RequestBody RegisterRequest registerRequest) {
-        authService.signUp(registerRequest.username(), registerRequest.password(), registerRequest.email());
+        authService.signUp(registerRequest.email(), registerRequest.password());
         val appUrl = request.getHeader("Origin");
-        eventPublisher.publishEvent(new OnRegistrationEvent(appUrl, registerRequest.username(), registerRequest.email()));
+        eventPublisher.publishEvent(new OnRegistrationEvent(appUrl, registerRequest.email()));
         return ResponseEntity.ok().build();
     }
 
@@ -51,12 +50,6 @@ public class AuthController {
     public ResponseEntity<?> restorePassword(HttpServletRequest request, @RequestParam String email) {
         val appUrl = request.getHeader("Origin");
         eventPublisher.publishEvent(new OnRestorePasswordEvent(email, appUrl));
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/restoreLogin")
-    public ResponseEntity<?> restoreLogin(HttpServletRequest request, @RequestParam String email) {
-        eventPublisher.publishEvent(new OnRestoreLoginEvent(email));
         return ResponseEntity.ok().build();
     }
 

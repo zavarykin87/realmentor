@@ -27,15 +27,12 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password", nullable = false)
     @JsonIgnore
     private String password;
-
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
 
     @ColumnDefault("false")
     private boolean enabled;
@@ -46,10 +43,9 @@ public class UserEntity implements UserDetails {
     @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private UserTokenEntity userTokenEntity;
 
-    public UserEntity(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
+    public UserEntity(String email, String password) {
         this.email = email;
+        this.password = password;
     }
 
     @Override
@@ -57,6 +53,11 @@ public class UserEntity implements UserDetails {
         return roleEntities.stream()
                 .map(r -> new SimpleGrantedAuthority(r.getName().toString()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     public void addRole(RoleEntity role) {

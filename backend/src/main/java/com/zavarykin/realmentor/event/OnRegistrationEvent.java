@@ -7,14 +7,12 @@ import org.springframework.context.ApplicationEvent;
 public class OnRegistrationEvent extends ApplicationEvent {
 
     private final String appUrl;
-    private final String username;
     private final String email;
 
-    public OnRegistrationEvent(String appUrl, String username, String email) {
+    public OnRegistrationEvent(String appUrl, String email) {
         super(email);
         this.appUrl = appUrl;
         this.email = email;
-        this.username = username;
     }
 
 }

@@ -43,6 +43,7 @@ public class SecurityConfig {
 //                    config.setAllowedHeaders(List.of("*"));
 //                    return config;
 //                }))
+                .cors(cors -> cors.disable())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()

@@ -20,9 +20,8 @@ public class UserServiceImpl implements UserService {
     @PostConstruct
     private void createAdmin() {
         UserEntity user = new UserEntity();
-        user.setUsername("admin");
-        user.setPassword(passwordEncoder.encode("admin"));
         user.setEmail("admin@mail.ru");
+        user.setPassword(passwordEncoder.encode("admin"));
         user.addRole(new RoleEntity(RoleName.ADMIN));
         user.setEnabled(true);
         userRepository.save(user);
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(); //TODO throw exception
+        return userRepository.findByEmail(username).orElseThrow(); //TODO throw exception
     }
 
     @Override
