@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const HomePage = () => {
   return (
     <div className="home-page">
-      <h1>Добро пожаловать!</h1>
+      <h1 className='text-red-700'>Добро пожаловать!</h1>
       <p>Это домашняя страница вашего приложения.</p>
       
       <div className="links">
