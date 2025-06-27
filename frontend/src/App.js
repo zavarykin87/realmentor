@@ -6,7 +6,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div>
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>
