@@ -36,40 +36,40 @@
                             </filesets>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>clean-node</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>node</directory>
-                                    <includes>
-                                        <include>**</include>
-                                    </includes>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>clean-node_modules</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>node_modules</directory>
-                                    <includes>
-                                        <include>**</include>
-                                    </includes>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>clean-node</id>-->
+<!--                        <phase>clean</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>clean</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <filesets>-->
+<!--                                <fileset>-->
+<!--                                    <directory>node</directory>-->
+<!--                                    <includes>-->
+<!--                                        <include>**</include>-->
+<!--                                    </includes>-->
+<!--                                </fileset>-->
+<!--                            </filesets>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>clean-node_modules</id>-->
+<!--                        <phase>clean</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>clean</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <filesets>-->
+<!--                                <fileset>-->
+<!--                                    <directory>node_modules</directory>-->
+<!--                                    <includes>-->
+<!--                                        <include>**</include>-->
+<!--                                    </includes>-->
+<!--                                </fileset>-->
+<!--                            </filesets>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
                 </executions>
             </plugin>
 

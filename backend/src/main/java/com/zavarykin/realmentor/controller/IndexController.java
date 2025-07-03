@@ -11,4 +11,9 @@ public class IndexController {
         return "index.html";
     }
 
+    @GetMapping("/login")
+    public String forward() {
+        return "forward:/index.html";
+    }
+
 }

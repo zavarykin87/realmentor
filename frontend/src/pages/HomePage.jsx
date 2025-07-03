@@ -1,18 +1,20 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Header from '../components/Header'
 
 const HomePage = () => {
   return (
     <div>
-      <h1>Добро пожаловать!</h1>
-      <p>Это домашняя страница вашего приложения.</p>
-      
-      <div>
-        <Link to="/about">О нас</Link>
-        <Link to="/contact">Контакты</Link>
-      </div>
+      <Header />
+      <p>Домашняя страница</p>
+      <ul>
+        <li>
+          <Link to='/login'>Войти</Link>
+          <Link to='/logout'>Выйти</Link>
+        </li>
+      </ul>
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

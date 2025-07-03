@@ -67,7 +67,7 @@ class AuthControllerTest {
         }
         """;
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())
@@ -87,7 +87,7 @@ class AuthControllerTest {
         }
         """;
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isForbidden());
@@ -106,7 +106,7 @@ class AuthControllerTest {
         }
         """;
 
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isForbidden());
@@ -122,7 +122,7 @@ class AuthControllerTest {
         }
         """;
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .header("Origin", "http://localhost")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -142,7 +142,7 @@ class AuthControllerTest {
 
         userRepository.save(new UserEntity("user@example.com", passwordEncoder.encode("password")));
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .header("Origin", "http://localhost")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -160,7 +160,7 @@ class AuthControllerTest {
         }
         """;
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .header("Origin", "http://localhost")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -178,7 +178,7 @@ class AuthControllerTest {
         }
         """;
 
-        mockMvc.perform(post("/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .header("Origin", "http://localhost")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -195,7 +195,7 @@ class AuthControllerTest {
         assertFalse(user.isEnabled());
         assertTrue(tokenRepository.findByUserEntity(user).isPresent());
 
-        mockMvc.perform(get("/auth/confirmRegister")
+        mockMvc.perform(get("/api/auth/confirmRegister")
                 .header("Origin", "http://localhost")
                 .param("token", tokenEntity.getToken())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -213,7 +213,7 @@ class AuthControllerTest {
     @Test
     void confirmRegister_shouldReturnServerErrorWhenTokenNotFound() throws Exception {
         var token = "testtoken";
-        mockMvc.perform(get("/auth/confirmRegister")
+        mockMvc.perform(get("/api/auth/confirmRegister")
                         .header("Origin", "http://localhost")
                         .param("token", token)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -229,7 +229,7 @@ class AuthControllerTest {
         tokenRepository.save(tokenEntity);
         assertFalse(user.isEnabled());
 
-        mockMvc.perform(get("/auth/confirmRegister")
+        mockMvc.perform(get("/api/auth/confirmRegister")
                         .header("Origin", "http://localhost")
                         .param("token", tokenEntity.getToken())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -247,7 +247,7 @@ class AuthControllerTest {
         assertFalse(tokenRepository.findByUserEntity(user).isPresent());
 
 
-        mockMvc.perform(post("/auth/restorePassword")
+        mockMvc.perform(post("/api/auth/restorePassword")
                 .header("Origin", "http://localhost")
                 .param("email", email)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -261,7 +261,7 @@ class AuthControllerTest {
     void restorePassword_shouldReturnServerErrorWhenEmailNotFound() throws Exception {
         var email = "user@example.com";
 
-        mockMvc.perform(post("/auth/restorePassword")
+        mockMvc.perform(post("/api/auth/restorePassword")
                         .header("Origin", "http://localhost")
                         .param("email", email)
                         .contentType(MediaType.APPLICATION_JSON))
